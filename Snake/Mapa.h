@@ -2,6 +2,7 @@
 #define MAPA_H
 
 #include <Windows.h>
+#include "Serpiente.h"
 
 const int FILAS = 39;
 const int COLUMNAS = 39;
@@ -36,7 +37,9 @@ typedef struct {
 } tMapa;
 
 tMapa* inicializarMapa();
-void mostrarMapa(const tMapa &mapa, ostream &oflujo);
+void eliminarMapa(tMapa *mapa);
+void mostrarMapa(tMapa *mapa, ostream &oflujo);
+void actualizarMapa(tMapa *mapa, tSerpiente serpiente, int fila, int columna);
 
 void setColor(tColor color); //Cambia el color de la consola.
 

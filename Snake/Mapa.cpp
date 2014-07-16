@@ -2,12 +2,15 @@
 using namespace std;
 #include <Windows.h>
 #include "Mapa.h"
+#include "Serpiente.h"
+#include "Presentacion.h"
 
 void mostrarCasilla(tCasilla casilla, ostream &oflujo);
 
-tMapa* inicializarMapa() {
+tMapa* inicializarMapa(tSerpiente serpiente) {
 
 	tMapa *mapa = new tMapa;
+	int fila, columna;
 
 	//Se inicializan todas las casillas.
 	for (int i = 0; i < FILAS; i++) {
@@ -29,24 +32,41 @@ tMapa* inicializarMapa() {
 	}
 
 	//Se coloca la serpiente
-	mapa->mapa[3][3].tipo = 1;
+	serpiente.fila = (rand() % (FILAS - 2)) + 1;
+	serpiente.columna = (rand() % (COLUMNAS - 2)) + 1;
+	mapa->mapa[serpiente.fila][serpiente.columna].tipo = serpiente.contador;
 
 	//Se coloca la primera manzana
-	mapa->mapa[7][7].tipo = -2;
+	fila = (rand() % (FILAS - 2)) + 1;
+	columna = (rand() % (COLUMNAS - 2)) + 1;
+
+	while (fila == serpiente.fila && columna == serpiente.columna) {
+
+		fila = (rand() % (FILAS - 2)) + 1;
+		columna = (rand() % (COLUMNAS - 2)) + 1;
+	}
+
+	mapa->mapa[fila][columna].tipo = -2;
 
 	return mapa;
 }
 
-void mostrarMapa(const tMapa &mapa, ostream &oflujo = cout) {
+void eliminarMapa(tMapa *mapa) {
+
+	delete mapa;
+	mapa = NULL;
+}
+
+void mostrarMapa(tMapa *mapa, ostream &oflujo = cout) {
 
 	for (int i = 0; i < FILAS; i++) {
 		for (int j = 0; j < COLUMNAS; j++) {
 
-			mostrarCasilla(mapa.mapa[i][j], oflujo);
+			mostrarCasilla(mapa->mapa[i][j], oflujo);
 		}
 		oflujo << endl;
 	}
-
+	pausa();
 }
 
 void mostrarCasilla(tCasilla casilla, ostream &oflujo = cout) {
@@ -56,22 +76,48 @@ void mostrarCasilla(tCasilla casilla, ostream &oflujo = cout) {
 		setColor(dark_blue);
 		oflujo << char(219) << char(219);
 		setColor(white);
-	} else if (casilla.tipo == -2) {
+	}
+	else if (casilla.tipo == -2) {
 
 		setColor(dark_red);
 		oflujo << char(219) << char(219);
 		setColor(white);
-	} else if (casilla.tipo > 0) {
+	}
+	else if (casilla.tipo > 0) {
 
 		setColor(light_green);
 		oflujo << char(219) << char(219);
 		setColor(white);
-	} else {
+	}
+	else {
 
 		oflujo << "  ";
 	}
 }
 
+void actualizarMapa(tMapa *mapa, tSerpiente serpiente, int fila, int columna) {
+
+	if (mapa->mapa[fila][columna].tipo == -2) {
+
+		serpiente.contador++;
+		mapa->mapa[fila][columna].tipo = serpiente.contador;
+	} else if (mapa->mapa[fila][columna].tipo == -1) {
+
+		serpiente.contador = 0;
+	} else {
+
+		for (int i = 0; i < FILAS; i++) {
+			for (int j = 0; j < COLUMNAS; j++) {
+
+				if (mapa->mapa[i][j].tipo > 0) {
+
+					mapa->mapa[i][j].tipo--;
+				}
+			}
+		}
+		mapa->mapa[fila][columna].tipo = serpiente.contador;
+	}
+}
 
 void setColor(tColor color) {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
