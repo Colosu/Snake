@@ -2,7 +2,8 @@
 #define SERPIENTE_H
 
 typedef struct {
-
+	int fila;
+	int columna;
 	int contador;
 } tSerpiente;
 
