@@ -1,6 +1,8 @@
 #ifndef MAPA_H
 #define MAPA_H
 
+#include <iostream>
+using namespace std;
 #include <Windows.h>
 #include "Serpiente.h"
 
@@ -31,15 +33,18 @@ typedef struct {
 	int tipo;
 } tCasilla;
 
+//typedef tCasilla *tCasillaPtr[COLUMNAS];
+//typedef tCasillaPtr *tPunteroMapa[FILAS];
+
 typedef struct {
 
-	tCasilla mapa[FILAS][COLUMNAS];
+	tCasilla **mapa;
 } tMapa;
 
-tMapa* inicializarMapa();
-void eliminarMapa(tMapa *mapa);
-void mostrarMapa(tMapa *mapa, ostream &oflujo);
-void actualizarMapa(tMapa *mapa, tSerpiente serpiente, int fila, int columna);
+tMapa inicializarMapa(tSerpiente &serpiente);
+void eliminarMapa(tMapa &mapa);
+void mostrarMapa(tMapa mapa, ostream &oflujo);
+void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna);
 
 void setColor(tColor color); //Cambia el color de la consola.
 

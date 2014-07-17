@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include "Serpiente.h"
 
 void inicializarSerpiente(tSerpiente &serpiente) {
