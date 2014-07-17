@@ -1,19 +1,22 @@
-﻿Compilación iniciada a las 17/07/2014 0:56:39.
+﻿Compilación iniciada a las 17/07/2014 2:29:01.
      1>Proyecto "C:\Users\Colosu\Documents\GitHub\Snake\Snake\Snake.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Mapa.cpp main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Mapa.cpp Movimiento.cpp main.cpp
+     1>cl : Línea de comandos warning D9028: error de recompilación mínimo, revirtiendo a la compilación normal
          Mapa.cpp
-         Generando código...
-         Compilando...
+         Movimiento.cpp
          main.cpp
+     1>c:\users\colosu\documents\github\snake\snake\main.cpp(16): warning C4244: 'argumento' : conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
          Generando código...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Colosu\Documents\GitHub\Snake\Snake\Debug\Snake.exe" /INCREMENTAL /NOLOGO /LIBPATH:lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib SDL2main.lib SDL2.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Colosu\Documents\GitHub\Snake\Snake\Debug\Snake.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Colosu\Documents\GitHub\Snake\Snake\Debug\Snake.lib" /MACHINE:X86 Debug\main.obj
          Debug\Mapa.obj
+         Debug\Movimiento.obj
          Debug\Presentacion.obj
+         Debug\Serpiente.obj
          Snake.vcxproj -> C:\Users\Colosu\Documents\GitHub\Snake\Snake\Debug\Snake.exe
      1>Compilación del proyecto terminada "C:\Users\Colosu\Documents\GitHub\Snake\Snake\Snake.vcxproj" (Build destinos).
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:03.79
+Tiempo transcurrido 00:00:09.22
