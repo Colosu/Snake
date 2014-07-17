@@ -8,6 +8,5 @@ using namespace std;
 #include "Presentacion.h"
 
 void mover(tMapa &mapa, tSerpiente &serpiente, istream &iflujo);
-void generarManzana(int &tipo, int &fila, int &columna);
 
 #endif

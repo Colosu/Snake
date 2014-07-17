@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+#include <cstdlib>
 #include <Windows.h>
 #include "Mapa.h"
 #include "Objetos.h"
@@ -109,6 +110,7 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 
 		serpiente.contador++;
 		mapa.mapa[fila][columna].tipo = serpiente.contador;
+		generarManzana(mapa, serpiente);
 	} else if (mapa.mapa[fila][columna].tipo == -1) {
 
 		serpiente.contador = 0;
@@ -125,6 +127,22 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 		}
 		mapa.mapa[fila][columna].tipo = serpiente.contador;
 	}
+}
+
+void generarManzana(tMapa &mapa, tSerpiente serpiente) {
+
+	int fila, columna;
+
+	fila = (rand() % (FILAS - 2)) + 1;
+	columna = (rand() % (COLUMNAS - 2)) + 1;
+
+	while (fila == serpiente.fila && columna == serpiente.columna) {
+
+		fila = (rand() % (FILAS - 2)) + 1;
+		columna = (rand() % (COLUMNAS - 2)) + 1;
+	}
+
+	mapa.mapa[fila][columna].tipo = -2;
 }
 
 void setColor(tColor color) {

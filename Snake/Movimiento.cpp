@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+#include <cstdlib>
 #include "Mapa.h"
 #include "Objetos.h"
 #include "Presentacion.h"
@@ -31,5 +32,4 @@ void mover(tMapa &mapa, tSerpiente &serpiente, istream &iflujo = cin) {
 		iflujo.clear();
 		iflujo.ignore();
 	}
-
 }

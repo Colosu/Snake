@@ -45,6 +45,7 @@ tMapa inicializarMapa(tSerpiente &serpiente);
 void eliminarMapa(tMapa &mapa);
 void mostrarMapa(tMapa mapa, ostream &oflujo);
 void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna);
+void generarManzana(tMapa &mapa, tSerpiente serpiente);
 
 void setColor(tColor color); //Cambia el color de la consola.
 
