@@ -4,9 +4,10 @@
 #include <iostream>
 using namespace std;
 #include "Mapa.h"
-#include "Serpiente.h"
+#include "Objetos.h"
 #include "Presentacion.h"
 
 void mover(tMapa &mapa, tSerpiente &serpiente, istream &iflujo);
+void generarManzana(int &tipo, int &fila, int &columna);
 
 #endif

@@ -1,4 +1,4 @@
-#include "Serpiente.h"
+#include "Objetos.h"
 
 void inicializarSerpiente(tSerpiente &serpiente) {
 	serpiente.fila = 1;

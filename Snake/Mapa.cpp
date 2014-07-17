@@ -2,7 +2,7 @@
 using namespace std;
 #include <Windows.h>
 #include "Mapa.h"
-#include "Serpiente.h"
+#include "Objetos.h"
 #include "Presentacion.h"
 
 void mostrarCasilla(tCasilla casilla, ostream &oflujo);

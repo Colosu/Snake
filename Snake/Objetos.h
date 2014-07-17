@@ -1,5 +1,5 @@
-#ifndef SERPIENTE_H
-#define SERPIENTE_H
+#ifndef OBJETOS_H
+#define OBJETOS_H
 
 typedef struct {
 	int fila;

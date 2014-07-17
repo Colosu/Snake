@@ -2,7 +2,7 @@
 using namespace std;
 #include <cstdlib>
 #include <ctime>
-#include "Serpiente.h"
+#include "Objetos.h"
 #include "Mapa.h"
 #include "Movimiento.h"
 #include "Presentacion.h"

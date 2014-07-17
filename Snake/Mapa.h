@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 #include <Windows.h>
-#include "Serpiente.h"
+#include "Objetos.h"
 
 const int FILAS = 39;
 const int COLUMNAS = 39;
