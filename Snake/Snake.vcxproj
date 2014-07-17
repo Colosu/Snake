@@ -73,12 +73,14 @@
     <ClCompile Include="Movimiento.cpp" />
     <ClCompile Include="Presentacion.cpp" />
     <ClCompile Include="Objetos.cpp" />
+    <ClCompile Include="Ventana.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mapa.h" />
     <ClInclude Include="Movimiento.h" />
     <ClInclude Include="Presentacion.h" />
     <ClInclude Include="Objetos.h" />
+    <ClInclude Include="Ventana.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

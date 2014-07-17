@@ -2,6 +2,7 @@
 using namespace std;
 #include <cstdlib>
 #include <Windows.h>
+#include "include\SDL2\SDL.h"
 #include "Mapa.h"
 #include "Objetos.h"
 #include "Presentacion.h"
