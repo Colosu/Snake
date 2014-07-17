@@ -8,20 +8,24 @@ void mover(tMapa &mapa, tSerpiente &serpiente, istream &iflujo = cin) {
 
 	char direccion;
 
-	iflujo.get(direccion);
+	iflujo >> direccion;
 
 	if (direccion == 'a' || direccion == 'A') {
 
-		actualizarMapa(mapa, serpiente, serpiente.fila, (serpiente.columna - 1));
+		serpiente.columna--;
+		actualizarMapa(mapa, serpiente, serpiente.fila, serpiente.columna);
 	} else if (direccion == 'w' || direccion == 'W') {
 
-		actualizarMapa(mapa, serpiente, (serpiente.fila - 1), serpiente.columna);
+		serpiente.fila--;
+		actualizarMapa(mapa, serpiente, serpiente.fila, serpiente.columna);
 	} else if (direccion == 'd' || direccion == 'D') {
 
-		actualizarMapa(mapa, serpiente, serpiente.fila, (serpiente.columna + 1));
+		serpiente.columna++;
+		actualizarMapa(mapa, serpiente, serpiente.fila, serpiente.columna);
 	} else if (direccion == 's' || direccion == 'S') {
 
-		actualizarMapa(mapa, serpiente, (serpiente.fila + 1), serpiente.columna);
+		serpiente.fila++;
+		actualizarMapa(mapa, serpiente, serpiente.fila, serpiente.columna);
 	} else {
 
 		iflujo.clear();
