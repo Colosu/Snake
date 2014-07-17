@@ -72,13 +72,13 @@
     <ClCompile Include="Mapa.cpp" />
     <ClCompile Include="Movimiento.cpp" />
     <ClCompile Include="Presentacion.cpp" />
-    <ClCompile Include="Serpiente.cpp" />
+    <ClCompile Include="Objetos.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mapa.h" />
     <ClInclude Include="Movimiento.h" />
     <ClInclude Include="Presentacion.h" />
-    <ClInclude Include="Serpiente.h" />
+    <ClInclude Include="Objetos.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
