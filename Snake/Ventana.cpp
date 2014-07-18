@@ -6,31 +6,34 @@ using namespace std;
 
 void logSDLError(const string &mensaje, ostream &oflujo = cerr) {
 
-	oflujo << mensaje << "error: " << SDL_GetError() << endl;
+	oflujo << mensaje << " error: " << SDL_GetError() << endl;
 }
 
-bool inicializarSDL(SDL_Window *ventana, SDL_Renderer *renderizado) {
+int inicializarSDL(SDL_Window *&ventana, SDL_Renderer *&renderizado) {
 
-	bool inicializado = true;
+	int inicializado = 0;
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0) {
 
 		logSDLError("SDL_Init()", cerr);
-		inicializado = false;
+		inicializado = 1;
 	} else {
 
 		ventana = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, VENTANA_X, VENTANA_Y, SDL_WINDOW_SHOWN);
 		if (ventana == NULL) {
 
 			logSDLError("SDL_CreateWindow()", cerr);
-			inicializado = false;
+			inicializado = 2;
 		} else {
 
-			renderizado = SDL_CreateRenderer(ventana, -1, 0);
+			renderizado = SDL_CreateRenderer(ventana, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (renderizado == NULL) {
 
 				logSDLError("SDL_CreateRenderer()", cerr);
-				inicializado = false;
+				inicializado = 3;
+			} else {
+
+				SDL_SetRenderDrawColor(renderizado, 0x00, 0x00, 0x00, 0xFF);
 			}
 		}
 	}
@@ -51,7 +54,7 @@ SDL_Texture* cargarTextura(const string &archivo, SDL_Renderer *renderizado) {
 		}	
 	} else {
 
-		logSDLError("SDL_LoadBMP", cerr);
+		logSDLError("SDL_LoadBMP()", cerr);
 	}
 		
 

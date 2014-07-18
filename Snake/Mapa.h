@@ -6,16 +6,13 @@ using namespace std;
 #include "include\SDL2\SDL.h"
 #include "Objetos.h"
 
-const int FILAS = 39;
-const int COLUMNAS = 39;
+const int FILAS = 40;
+const int COLUMNAS = 40;
 
 typedef struct {
 
 	int tipo;
 } tCasilla;
-
-//typedef tCasilla *tCasillaPtr[COLUMNAS];
-//typedef tCasillaPtr *tPunteroMapa[FILAS];
 
 typedef struct {
 

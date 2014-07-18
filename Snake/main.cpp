@@ -10,62 +10,144 @@ using namespace std;
 #include "Ventana.h"
 #include "Presentacion.h"
 
+string obtenerDireccion(const string &direccion);
 
-
-int main() {
+int main(int argc, char **argv) {
 
 	tMapa mapa;
 	tSerpiente serpiente;
 	SDL_Window *ventana = NULL;
 	SDL_Renderer *renderizado = NULL;
-	SDL_Texture *bordes;
-	SDL_Texture *manzanas;
-	SDL_Texture *serpientes;
+	SDL_Texture *bordes = NULL;
+	SDL_Texture *manzanas = NULL;
+	SDL_Texture *serpientes = NULL;
 	string direccion;
-	bool iniciado;
+	int inicializado;
 
 	//idioma();
 	srand(time(NULL));
 	limpiar();
 
-	iniciado = inicializarSDL(ventana, renderizado);
+	inicializado = inicializarSDL(ventana, renderizado);
 
-	direccion = "resources/";
+	direccion = obtenerDireccion("");
 
-	bordes = cargarTextura(direccion + "borde.bmp", renderizado);
-	manzanas = cargarTextura(direccion + "manzana.bmp", renderizado);
-	serpientes = cargarTextura(direccion + "serpiente.bmp", renderizado);
+	if (inicializado == 0) {
 
-	if (bordes == NULL || manzanas == NULL || serpientes == NULL) {
+		bordes = cargarTextura(direccion + "bordes.bmp", renderizado);
+		manzanas = cargarTextura(direccion + "manzanas.bmp", renderizado);
+		serpientes = cargarTextura(direccion + "serpientes.bmp", renderizado);
 
-		iniciado = false;
+		if (bordes == NULL && manzanas == NULL && serpientes == NULL) {
+
+			inicializado = 4;
+		} else if (bordes != NULL && manzanas == NULL && serpientes == NULL) {
+
+			inicializado = 4;
+
+			SDL_DestroyTexture(bordes);
+		} else if (bordes == NULL && manzanas != NULL && serpientes == NULL) {
+
+			inicializado = 4;
+
+			SDL_DestroyTexture(manzanas);
+		} else if (bordes == NULL && manzanas == NULL && serpientes != NULL) {
+
+			inicializado = 4;
+
+			SDL_DestroyTexture(serpientes);
+		} else if (bordes != NULL && manzanas == NULL && serpientes != NULL) {
+
+			inicializado = 4;
+
+			SDL_DestroyTexture(bordes);
+			SDL_DestroyTexture(serpientes);
+		} else if (bordes == NULL && manzanas != NULL && serpientes != NULL) {
+
+			inicializado = 4;
+
+			SDL_DestroyTexture(manzanas);
+			SDL_DestroyTexture(serpientes);
+		} else if (bordes != NULL && manzanas != NULL && serpientes == NULL) {
+
+			inicializado = 4;
+
+			SDL_DestroyTexture(bordes);
+			SDL_DestroyTexture(manzanas);
+		} else {
+
+			inicializarSerpiente(serpiente);
+			mapa = inicializarMapa(serpiente);
+
+			mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
+
+			while (serpiente.contador > 0) {
+
+				mover(mapa, serpiente, cin);
+				limpiar();
+				mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
+			}
+
+			eliminarMapa(mapa);
+		}
 	}
 
-	if (iniciado) {
+	if (inicializado == 4) {
 
-		inicializarSerpiente(serpiente);
-		mapa = inicializarMapa(serpiente);
+		SDL_DestroyRenderer(renderizado);
 
-		mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
+		SDL_DestroyWindow(ventana);
 
-		while (serpiente.contador > 0) {
+		SDL_Quit();
+	} else if (inicializado == 3) {
 
-			mover(mapa, serpiente, cin);
-			limpiar();
-			mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
+		SDL_DestroyWindow(ventana);
+
+		SDL_Quit();
+	} else if (inicializado == 2) {
+
+		SDL_Quit();
+	} else {
+
+		SDL_DestroyTexture(bordes);
+		SDL_DestroyTexture(manzanas);
+		SDL_DestroyTexture(serpientes);
+
+		SDL_DestroyRenderer(renderizado);
+
+		SDL_DestroyWindow(ventana);
+
+		SDL_Quit();
+	}
+	return 0;
+}
+
+string obtenerDireccion(const string &direccion = "") {
+
+#ifdef _WIN32
+	const char PATH_SEP = '\\';
+#else
+	const char PATH_SEP = '/';
+#endif
+
+	static string baseRes;
+
+	if (baseRes.empty()) {
+
+		char *basePath = SDL_GetBasePath();
+		if (basePath) {
+
+			baseRes = basePath;
+			SDL_free(basePath);
+		} else {
+
+			cerr << "Error obteniendo la ruta de datos: " << SDL_GetError() << endl;
+			return "";
 		}
 
-		eliminarMapa(mapa);
+		size_t pos = baseRes.find_last_of("bin") - 2;
+		baseRes = baseRes.substr(0, pos) + "resources" + PATH_SEP;
 	}
 
-	SDL_DestroyTexture(bordes);
-	SDL_DestroyTexture(manzanas);
-	SDL_DestroyTexture(serpientes);
-
-	SDL_DestroyRenderer(renderizado);
-
-	SDL_DestroyWindow(ventana);
-
-	SDL_Quit();
-	return 0;
+	return direccion.empty() ? baseRes : baseRes + direccion + PATH_SEP;
 }
