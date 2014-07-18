@@ -5,10 +5,12 @@
 #include <string>
 using namespace std;
 
-const int VENTANA_X = 640;
-const int VENTANA_Y = 480;
+const int VENTANA_X = 600;
+const int VENTANA_Y = 600;
 
+void logSDLError(const string &mensaje, ostream &oflujo);
 bool inicializarSDL(SDL_Window *ventana, SDL_Renderer *renderizado);
-void logSDLError(const string mensaje, ostream &oflujo = cout);
+SDL_Texture* cargarTextura(const string &archivo, SDL_Renderer *renderizado);
+void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, int y);
 
 #endif

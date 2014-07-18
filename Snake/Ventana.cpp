@@ -4,6 +4,11 @@ using namespace std;
 #include "include\SDL2\SDL.h"
 #include "Ventana.h"
 
+void logSDLError(const string &mensaje, ostream &oflujo = cerr) {
+
+	oflujo << mensaje << "error: " << SDL_GetError() << endl;
+}
+
 bool inicializarSDL(SDL_Window *ventana, SDL_Renderer *renderizado) {
 
 	bool inicializado = true;
@@ -32,7 +37,34 @@ bool inicializarSDL(SDL_Window *ventana, SDL_Renderer *renderizado) {
 	return inicializado;
 }
 
-void logSDLError(const string mensaje, ostream &oflujo = cout) {
+SDL_Texture* cargarTextura(const string &archivo, SDL_Renderer *renderizado) {
 
-	oflujo << mensaje << "error: " << SDL_GetError() << endl;
+	SDL_Texture *textura = NULL;
+	SDL_Surface *imagenCargada = SDL_LoadBMP(archivo.c_str());
+
+	if (imagenCargada != NULL){
+		textura = SDL_CreateTextureFromSurface(renderizado, imagenCargada);
+		SDL_FreeSurface(imagenCargada);
+
+		if (textura == NULL) {
+			logSDLError("Crear Textura Desde Superficie", cerr);
+		}	
+	} else {
+
+		logSDLError("SDL_LoadBMP", cerr);
+	}
+		
+
+	return textura;
+}
+
+void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, int y) {
+
+	SDL_Rect rectangulo;
+
+	rectangulo.x = x;
+	rectangulo.y = y;
+
+	SDL_QueryTexture(textura, NULL, NULL, &rectangulo.x, &rectangulo.y);
+	SDL_RenderCopy(renderizado, textura, NULL, &rectangulo);
 }

@@ -1,13 +1,13 @@
 #include <iostream>
 using namespace std;
 #include <cstdlib>
-#include <Windows.h>
 #include "include\SDL2\SDL.h"
 #include "Mapa.h"
 #include "Objetos.h"
+#include "Ventana.h"
 #include "Presentacion.h"
 
-void mostrarCasilla(tCasilla casilla, ostream &oflujo);
+void mostrarCasilla(tCasilla casilla, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *serpientes, int fila, int columna);
 
 tMapa inicializarMapa(tSerpiente &serpiente) {
 
@@ -68,40 +68,39 @@ void eliminarMapa(tMapa &mapa) {
 	delete[] mapa.mapa;
 }
 
-void mostrarMapa(tMapa mapa, ostream &oflujo = cout) {
+void mostrarMapa(tMapa mapa, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *serpientes) {
+
+	SDL_RenderClear(renderizado);
 
 	for (int i = 0; i < FILAS; i++) {
 		for (int j = 0; j < COLUMNAS; j++) {
 
-			mostrarCasilla(mapa.mapa[i][j], oflujo);
+			mostrarCasilla(mapa.mapa[i][j], renderizado, bordes, manzanas, serpientes, i, j);
 		}
-		oflujo << endl;
 	}
+
+	SDL_RenderPresent(renderizado);
 }
 
-void mostrarCasilla(tCasilla casilla, ostream &oflujo = cout) {
+void mostrarCasilla(tCasilla casilla, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *serpientes, int fila, int columna) {
+
+	int largo, ancho;
 
 	if (casilla.tipo == -1) {
 
-		setColor(dark_blue);
-		oflujo << char(219) << char(219);
-		setColor(white);
-	}
-	else if (casilla.tipo == -2) {
+		SDL_QueryTexture(bordes, NULL, NULL, &largo, &ancho);
+		renderizarTextura(bordes, renderizado, fila*largo, columna*ancho);
+	} else if (casilla.tipo == -2) {
 
-		setColor(dark_red);
-		oflujo << char(219) << char(219);
-		setColor(white);
-	}
-	else if (casilla.tipo > 0) {
+		SDL_QueryTexture(manzanas, NULL, NULL, &largo, &ancho);
+		renderizarTextura(manzanas, renderizado, fila*largo, columna*ancho);
+	} else if (casilla.tipo > 0) {
 
-		setColor(light_green);
-		oflujo << char(219) << char(219);
-		setColor(white);
-	}
-	else {
+		SDL_QueryTexture(serpientes, NULL, NULL, &largo, &ancho);
+		renderizarTextura(serpientes, renderizado, fila*largo, columna*ancho);
+	} else {
 
-		oflujo << "  ";
+		//oflujo << "  ";
 	}
 }
 
@@ -144,9 +143,4 @@ void generarManzana(tMapa &mapa, tSerpiente serpiente) {
 	}
 
 	mapa.mapa[fila][columna].tipo = -2;
-}
-
-void setColor(tColor color) {
-	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(handle, color);
 }
