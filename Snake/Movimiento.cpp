@@ -5,31 +5,23 @@ using namespace std;
 #include "Objetos.h"
 #include "Presentacion.h"
 
-void mover(tMapa &mapa, tSerpiente &serpiente, istream &iflujo = cin) {
+void mover(tMapa &mapa, tSerpiente &serpiente, SDL_Event evento) {
 
-	char direccion;
-
-	iflujo >> direccion;
-
-	if (direccion == 'a' || direccion == 'A') {
+	if (evento.key.keysym.sym == SDLK_a) {
 
 		serpiente.columna--;
 		actualizarMapa(mapa, serpiente, serpiente.fila, serpiente.columna);
-	} else if (direccion == 'w' || direccion == 'W') {
+	} else if (evento.key.keysym.sym == SDLK_w) {
 
 		serpiente.fila--;
 		actualizarMapa(mapa, serpiente, serpiente.fila, serpiente.columna);
-	} else if (direccion == 'd' || direccion == 'D') {
+	} else if (evento.key.keysym.sym == SDLK_d) {
 
 		serpiente.columna++;
 		actualizarMapa(mapa, serpiente, serpiente.fila, serpiente.columna);
-	} else if (direccion == 's' || direccion == 'S') {
+	} else if (evento.key.keysym.sym == SDLK_s) {
 
 		serpiente.fila++;
 		actualizarMapa(mapa, serpiente, serpiente.fila, serpiente.columna);
-	} else {
-
-		iflujo.clear();
-		iflujo.ignore();
 	}
 }

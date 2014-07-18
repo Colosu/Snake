@@ -7,6 +7,6 @@ using namespace std;
 #include "Objetos.h"
 #include "Presentacion.h"
 
-void mover(tMapa &mapa, tSerpiente &serpiente, istream &iflujo);
+void mover(tMapa &mapa, tSerpiente &serpiente, SDL_Event evento);
 
 #endif

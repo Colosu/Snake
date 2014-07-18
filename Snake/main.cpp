@@ -21,12 +21,13 @@ int main(int argc, char **argv) {
 	SDL_Texture *bordes = NULL;
 	SDL_Texture *manzanas = NULL;
 	SDL_Texture *serpientes = NULL;
+	SDL_Event evento;
 	string direccion;
 	int inicializado;
+	bool finalizar;
 
 	//idioma();
 	srand(time(NULL));
-	limpiar();
 
 	inicializado = inicializarSDL(ventana, renderizado);
 
@@ -78,13 +79,22 @@ int main(int argc, char **argv) {
 
 			inicializarSerpiente(serpiente);
 			mapa = inicializarMapa(serpiente);
-
+			finalizar = false;
 			mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
 
-			while (serpiente.contador > 0) {
+			while (!finalizar) {
 
-				mover(mapa, serpiente, cin);
-				limpiar();
+				while (SDL_PollEvent(&evento)) {
+
+					if (evento.type == SDL_QUIT) { //Cierra la ventana con la X
+						finalizar = true;
+					}
+					if (evento.type == SDL_KEYDOWN) {  //Presiona una tecla
+
+						mover(mapa, serpiente, evento);
+					}
+				}
+
 				mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
 			}
 

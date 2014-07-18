@@ -133,7 +133,7 @@ void generarManzana(tMapa &mapa, tSerpiente serpiente) {
 	fila = (rand() % (FILAS - 2)) + 1;
 	columna = (rand() % (COLUMNAS - 2)) + 1;
 
-	while (fila == serpiente.fila && columna == serpiente.columna) {
+	while (mapa.mapa[fila][columna].tipo > 0) {
 
 		fila = (rand() % (FILAS - 2)) + 1;
 		columna = (rand() % (COLUMNAS - 2)) + 1;
