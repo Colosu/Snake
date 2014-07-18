@@ -98,9 +98,6 @@ void mostrarCasilla(tCasilla casilla, SDL_Renderer *renderizado, SDL_Texture *bo
 
 		SDL_QueryTexture(serpientes, NULL, NULL, &largo, &ancho);
 		renderizarTextura(serpientes, renderizado, fila*largo, columna*ancho);
-	} else {
-
-		//oflujo << "  ";
 	}
 }
 

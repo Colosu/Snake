@@ -68,6 +68,6 @@ void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, i
 	rectangulo.x = x;
 	rectangulo.y = y;
 
-	SDL_QueryTexture(textura, NULL, NULL, &rectangulo.x, &rectangulo.y);
+	SDL_QueryTexture(textura, NULL, NULL, &rectangulo.h, &rectangulo.w);
 	SDL_RenderCopy(renderizado, textura, NULL, &rectangulo);
 }
