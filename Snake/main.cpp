@@ -26,7 +26,6 @@ int main(int argc, char **argv) {
 	int inicializado;
 	bool finalizar;
 
-	//idioma();
 	srand(time(NULL));
 
 	inicializado = inicializarSDL(ventana, renderizado);
@@ -96,6 +95,10 @@ int main(int argc, char **argv) {
 				}
 
 				mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
+				if (serpiente.contador <= 0) {
+
+					finalizar = true;
+				}
 			}
 
 			eliminarMapa(mapa);

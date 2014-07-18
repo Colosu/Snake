@@ -1,8 +1,6 @@
 #ifndef MAPA_H
 #define MAPA_H
 
-#include <iostream>
-using namespace std;
 #include "include\SDL2\SDL.h"
 #include "Objetos.h"
 
