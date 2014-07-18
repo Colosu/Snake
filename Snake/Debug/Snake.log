@@ -1,4 +1,4 @@
-﻿Compilación iniciada a las 18/07/2014 23:40:46.
+﻿Compilación iniciada a las 18/07/2014 23:47:29.
      1>Proyecto "C:\Users\Colosu\Documents\GitHub\Snake\Snake\Snake.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Mapa.cpp Ventana.cpp
@@ -17,4 +17,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:03.63
+Tiempo transcurrido 00:00:04.13

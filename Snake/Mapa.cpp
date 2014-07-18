@@ -84,20 +84,20 @@ void mostrarMapa(tMapa mapa, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL
 
 void mostrarCasilla(tCasilla casilla, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *serpientes, int fila, int columna) {
 
-	int largo, ancho;
+	int largo, alto;
 
 	if (casilla.tipo == -1) {
 
-		SDL_QueryTexture(bordes, NULL, NULL, &largo, &ancho);
-		renderizarTextura(bordes, renderizado, fila*largo, columna*ancho);
+		SDL_QueryTexture(bordes, NULL, NULL, &largo, &alto);
+		renderizarTextura(bordes, renderizado, columna*largo, fila*alto);
 	} else if (casilla.tipo == -2) {
 
-		SDL_QueryTexture(manzanas, NULL, NULL, &largo, &ancho);
-		renderizarTextura(manzanas, renderizado, fila*largo, columna*ancho);
+		SDL_QueryTexture(manzanas, NULL, NULL, &largo, &alto);
+		renderizarTextura(manzanas, renderizado, columna*largo, fila*alto);
 	} else if (casilla.tipo > 0) {
 
-		SDL_QueryTexture(serpientes, NULL, NULL, &largo, &ancho);
-		renderizarTextura(serpientes, renderizado, fila*largo, columna*ancho);
+		SDL_QueryTexture(serpientes, NULL, NULL, &largo, &alto);
+		renderizarTextura(serpientes, renderizado, columna*largo, fila*alto);
 	}
 }
 
