@@ -105,7 +105,7 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 
 		serpiente.contador++;
 		mapa.mapa[fila][columna].tipo = serpiente.contador;
-		generarManzana(mapa, serpiente);
+		generarManzana(mapa);
 	} else if (mapa.mapa[fila][columna].tipo == -1) {
 
 		serpiente.contador = 0;
@@ -115,10 +115,10 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 		for (int i = 0; i < FILAS; i++) {
 			for (int j = 0; j < COLUMNAS; j++) {
 
-				if (mapa.mapa[i][j].tipo > 0 && mapa.mapa[i][j].tipo >= mapa.mapa[fila][columna].tipo) {
+				if (mapa.mapa[i][j].tipo >= mapa.mapa[fila][columna].tipo) {
 
 					mapa.mapa[i][j].tipo = mapa.mapa[i][j].tipo - mapa.mapa[fila][columna].tipo;
-				} else if (mapa.mapa[i][j].tipo > 0) {
+				} else if (mapa.mapa[i][j].tipo > 0 && mapa.mapa[i][j].tipo < mapa.mapa[fila][columna].tipo) {
 
 					mapa.mapa[i][j].tipo = 0;
 				}
@@ -140,7 +140,7 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 	}
 }
 
-void generarManzana(tMapa &mapa, tSerpiente serpiente) {
+void generarManzana(tMapa &mapa) {
 
 	int fila, columna;
 
