@@ -1,15 +1,18 @@
-﻿Compilación iniciada a las 19/07/2014 0:37:06.
-     1>Proyecto "C:\Users\Colosu\Documents\GitHub\Snake\Snake\Snake.vcxproj" en el nodo 2 (Build destinos).
-     1>Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Colosu\Documents\GitHub\Snake\Snake\Debug\Snake.exe" /INCREMENTAL /NOLOGO /LIBPATH:lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Colosu\Documents\GitHub\Snake\Snake\Debug\Snake.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Colosu\Documents\GitHub\Snake\Snake\Debug\Snake.lib" /MACHINE:X86 Debug\main.obj
+﻿Compilación iniciada a las 19/07/2014 14:30:35.
+     1>Proyecto "C:\Users\alfredo\Documents\GitHub\Snake\Snake\Snake.vcxproj" en el nodo 2 (Build destinos).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Mapa.cpp
+         Mapa.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\alfredo\Documents\GitHub\Snake\Snake\Debug\Snake.exe" /INCREMENTAL /NOLOGO /LIBPATH:lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\alfredo\Documents\GitHub\Snake\Snake\Debug\Snake.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\alfredo\Documents\GitHub\Snake\Snake\Debug\Snake.lib" /MACHINE:X86 Debug\main.obj
          Debug\Mapa.obj
          Debug\Movimiento.obj
          Debug\Presentacion.obj
          Debug\Objetos.obj
          Debug\Ventana.obj
-         Snake.vcxproj -> C:\Users\Colosu\Documents\GitHub\Snake\Snake\Debug\Snake.exe
-     1>Compilación del proyecto terminada "C:\Users\Colosu\Documents\GitHub\Snake\Snake\Snake.vcxproj" (Build destinos).
+         Snake.vcxproj -> C:\Users\alfredo\Documents\GitHub\Snake\Snake\Debug\Snake.exe
+     1>Compilación del proyecto terminada "C:\Users\alfredo\Documents\GitHub\Snake\Snake\Snake.vcxproj" (Build destinos).
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:00.67
+Tiempo transcurrido 00:00:02.23
