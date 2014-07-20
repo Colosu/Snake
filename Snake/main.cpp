@@ -20,7 +20,9 @@ int main(int argc, char **argv) {
 	SDL_Renderer *renderizado = NULL;
 	SDL_Texture *bordes = NULL;
 	SDL_Texture *manzanas = NULL;
-	SDL_Texture *serpientes = NULL;
+	SDL_Texture *cabezaSerpiente = NULL;
+	SDL_Texture *serpiente1 = NULL;
+	//SDL_Texture *serpiente2 = NULL;
 	SDL_Event evento;
 	string direccion;
 	int inicializado;
@@ -36,50 +38,19 @@ int main(int argc, char **argv) {
 
 		bordes = cargarTextura(direccion + "bordes.bmp", renderizado);
 		manzanas = cargarTextura(direccion + "manzanas.bmp", renderizado);
-		serpientes = cargarTextura(direccion + "serpientes.bmp", renderizado);
+		cabezaSerpiente = cargarTextura(direccion + "cabezaSerpiente.bmp", renderizado);
+		serpiente1 = cargarTextura(direccion + "serpiente1.bmp", renderizado);
+		//serpiente2 = cargarTextura(direccion + "serpiente2.bmp", renderizado);
 
-		if (bordes == NULL && manzanas == NULL && serpientes == NULL) {
-
-			inicializado = 4;
-		} else if (bordes != NULL && manzanas == NULL && serpientes == NULL) {
-
-			inicializado = 4;
-
-			SDL_DestroyTexture(bordes);
-		} else if (bordes == NULL && manzanas != NULL && serpientes == NULL) {
+		if (bordes == NULL || manzanas == NULL || cabezaSerpiente == NULL || serpiente1 == NULL /*|| serpiente2 == NULL*/) {
 
 			inicializado = 4;
-
-			SDL_DestroyTexture(manzanas);
-		} else if (bordes == NULL && manzanas == NULL && serpientes != NULL) {
-
-			inicializado = 4;
-
-			SDL_DestroyTexture(serpientes);
-		} else if (bordes != NULL && manzanas == NULL && serpientes != NULL) {
-
-			inicializado = 4;
-
-			SDL_DestroyTexture(bordes);
-			SDL_DestroyTexture(serpientes);
-		} else if (bordes == NULL && manzanas != NULL && serpientes != NULL) {
-
-			inicializado = 4;
-
-			SDL_DestroyTexture(manzanas);
-			SDL_DestroyTexture(serpientes);
-		} else if (bordes != NULL && manzanas != NULL && serpientes == NULL) {
-
-			inicializado = 4;
-
-			SDL_DestroyTexture(bordes);
-			SDL_DestroyTexture(manzanas);
 		} else {
 
 			inicializarSerpiente(serpiente);
 			mapa = inicializarMapa(serpiente);
 			finalizar = false;
-			mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
+			mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, cabezaSerpiente, serpiente1);
 
 			while (!finalizar) {
 
@@ -94,7 +65,7 @@ int main(int argc, char **argv) {
 					}
 				}
 
-				mostrarMapa(mapa, renderizado, bordes, manzanas, serpientes);
+				mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, cabezaSerpiente, serpiente1);
 				if (serpiente.contador <= 0) {
 
 					finalizar = true;
@@ -124,7 +95,9 @@ int main(int argc, char **argv) {
 
 		SDL_DestroyTexture(bordes);
 		SDL_DestroyTexture(manzanas);
-		SDL_DestroyTexture(serpientes);
+		SDL_DestroyTexture(cabezaSerpiente);
+		SDL_DestroyTexture(serpiente1);
+		//SDL_DestroyTexture(serpiente2);
 
 		SDL_DestroyRenderer(renderizado);
 
