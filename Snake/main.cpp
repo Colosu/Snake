@@ -23,10 +23,11 @@ int main(int argc, char **argv) {
 	SDL_Texture *cabezaSerpiente = NULL;
 	SDL_Texture *serpiente1 = NULL;
 	//SDL_Texture *serpiente2 = NULL;
+	SDL_Texture *inicio = NULL;
 	SDL_Event evento;
 	string direccion;
 	int inicializado;
-	bool finalizar;
+	bool empezar, finalizar;
 
 	srand(time(NULL));
 
@@ -41,15 +42,33 @@ int main(int argc, char **argv) {
 		cabezaSerpiente = cargarTextura(direccion + "cabezaSerpiente.bmp", renderizado);
 		serpiente1 = cargarTextura(direccion + "serpiente1.bmp", renderizado);
 		//serpiente2 = cargarTextura(direccion + "serpiente2.bmp", renderizado);
+		inicio = cargarTextura(direccion + "inicio.bmp", renderizado);
 
-		if (bordes == NULL || manzanas == NULL || cabezaSerpiente == NULL || serpiente1 == NULL /*|| serpiente2 == NULL*/) {
+		if (bordes == NULL || manzanas == NULL || cabezaSerpiente == NULL || serpiente1 == NULL /*|| serpiente2 == NULL*/ || inicio == NULL) {
 
 			inicializado = 4;
 		} else {
 
+			empezar = false;
+			finalizar = false;
+
+			while (!empezar && !finalizar) {
+
+				mostrarInicio(renderizado, inicio);
+
+				while (SDL_PollEvent(&evento)) {
+
+					if (evento.type == SDL_QUIT) { //Cierra la ventana con la X
+						finalizar = true;
+					}
+					if (evento.type == SDL_KEYDOWN && (evento.key.keysym.sym == SDLK_KP_ENTER || evento.key.keysym.sym == SDLK_RETURN)) {  //Presiona el enter
+
+						empezar = true;
+					}
+				}
+			}
 			inicializarSerpiente(serpiente);
 			mapa = inicializarMapa(serpiente);
-			finalizar = false;
 			mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, cabezaSerpiente, serpiente1);
 
 			while (!finalizar) {

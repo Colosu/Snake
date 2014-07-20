@@ -66,6 +66,18 @@ void eliminarMapa(tMapa &mapa) {
 	delete[] mapa.mapa;
 }
 
+void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio) {
+
+	int largo, alto;
+
+	SDL_RenderClear(renderizado);
+	
+	SDL_QueryTexture(inicio, NULL, NULL, &largo, &alto);
+	renderizarTextura(inicio, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 2) - (alto / 2));
+
+	SDL_RenderPresent(renderizado);
+}
+
 void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *cabezaSerpiente, SDL_Texture *serpientes) {
 
 	SDL_RenderClear(renderizado);
