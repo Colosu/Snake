@@ -1,4 +1,4 @@
-﻿Compilación iniciada a las 20/07/2014 18:45:08.
+﻿Compilación iniciada a las 20/07/2014 19:01:38.
      1>Proyecto "C:\Users\alfredo\Documents\GitHub\Snake\Snake\Snake.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
@@ -16,4 +16,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:02.39
+Tiempo transcurrido 00:00:03.88

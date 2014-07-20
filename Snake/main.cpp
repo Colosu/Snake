@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
 			inicializado = 4;
 		} else {
 
+			int largo, alto;
 			empezar = false;
 			finalizar = false;
 
@@ -56,12 +57,18 @@ int main(int argc, char **argv) {
 
 				mostrarInicio(renderizado, inicio);
 
+				SDL_QueryTexture(inicio, NULL, NULL, &largo, &alto);
+
 				while (SDL_PollEvent(&evento)) {
 
 					if (evento.type == SDL_QUIT) { //Cierra la ventana con la X
 						finalizar = true;
 					}
 					if (evento.type == SDL_KEYDOWN && (evento.key.keysym.sym == SDLK_KP_ENTER || evento.key.keysym.sym == SDLK_RETURN)) {  //Presiona el enter
+
+						empezar = true;
+					}
+					if (evento.type == SDL_MOUSEBUTTONDOWN && evento.button.button == SDL_BUTTON_LEFT && evento.button.x >= (VENTANA_X / 2) - (largo / 2) && evento.button.x <= (VENTANA_X / 2) + (largo / 2) && evento.button.y >= (VENTANA_Y / 2) - (alto / 2) && evento.button.y <= (VENTANA_Y / 2) + (alto / 2)) {  //Presiona el enter
 
 						empezar = true;
 					}
