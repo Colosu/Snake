@@ -21,10 +21,10 @@ int main(int argc, char **argv) {
 	SDL_Renderer *renderizado = NULL;
 	SDL_Texture *bordes = NULL;
 	SDL_Texture *manzanas = NULL;
-	SDL_Texture *cabezaSerpiente = NULL;
 	SDL_Texture *serpiente1 = NULL;
 	//SDL_Texture *serpiente2 = NULL;
 	SDL_Texture *inicio = NULL;
+	SDL_Rect clipsSerpiente[12];
 	SDL_Event evento;
 	string direccion;
 	int inicializado = 0;
@@ -48,12 +48,11 @@ int main(int argc, char **argv) {
 
 				bordes = cargarTextura(direccion + "bordes.bmp", renderizado);
 				manzanas = cargarTextura(direccion + "manzanas.bmp", renderizado);
-				cabezaSerpiente = cargarTextura(direccion + "cabezaSerpiente.bmp", renderizado);
-				serpiente1 = cargarTextura(direccion + "serpiente1.bmp", renderizado);
+				serpiente1 = cargarTextura(direccion + "serpiente1.png", renderizado);
 				//serpiente2 = cargarTextura(direccion + "serpiente2.bmp", renderizado);
 				inicio = cargarTextura(direccion + "inicio.bmp", renderizado);
 
-				if (bordes != NULL && manzanas != NULL && cabezaSerpiente != NULL && serpiente1 != NULL /*&& serpiente2 != NULL*/ && inicio != NULL) {
+				if (bordes != NULL && manzanas != NULL && serpiente1 != NULL /*&& serpiente2 != NULL*/ && inicio != NULL) {
 
 					int ancho, alto;
 					empezar = false;
@@ -80,9 +79,9 @@ int main(int argc, char **argv) {
 							}
 						}
 					}
-					inicializarSerpiente(serpiente);
+					inicializarSerpiente(serpiente, clipsSerpiente);
 					mapa = inicializarMapa(serpiente);
-					mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, cabezaSerpiente, serpiente1);
+					mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, serpiente1, clipsSerpiente);
 
 					while (!finalizar) {
 
@@ -97,7 +96,7 @@ int main(int argc, char **argv) {
 							}
 						}
 
-						mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, cabezaSerpiente, serpiente1);
+						mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, serpiente1, clipsSerpiente);
 						if (serpiente.contador <= 0) {
 
 							finalizar = true;
@@ -108,7 +107,6 @@ int main(int argc, char **argv) {
 
 					SDL_DestroyTexture(bordes);
 					SDL_DestroyTexture(manzanas);
-					SDL_DestroyTexture(cabezaSerpiente);
 					SDL_DestroyTexture(serpiente1);
 					//SDL_DestroyTexture(serpiente2);
 				}

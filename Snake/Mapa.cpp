@@ -5,7 +5,7 @@
 #include "Ventana.h"
 #include "Presentacion.h"
 
-void mostrarCasilla(tCasilla casilla, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *cabezaSerpiente, SDL_Texture *serpientes, int fila, int columna);
+void mostrarCasilla(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12], int fila, int columna);
 
 tMapa inicializarMapa(tSerpiente &serpiente) {
 
@@ -78,40 +78,51 @@ void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio) {
 	SDL_RenderPresent(renderizado);
 }
 
-void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *cabezaSerpiente, SDL_Texture *serpientes) {
+void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12]) {
 
 	SDL_RenderClear(renderizado);
 
 	for (int i = 0; i < FILAS; i++) {
 		for (int j = 0; j < COLUMNAS; j++) {
 
-			mostrarCasilla(mapa.mapa[i][j], serpiente, renderizado, bordes, manzanas, cabezaSerpiente, serpientes, i, j);
+			mostrarCasilla(mapa, serpiente, renderizado, bordes, manzanas, serpientes, clipsSerpiente, i, j);
 		}
 	}
 
 	SDL_RenderPresent(renderizado);
 }
 
-void mostrarCasilla(tCasilla casilla, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *cabezaSerpiente, SDL_Texture *serpientes, int fila, int columna) {
+void mostrarCasilla(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12], int fila, int columna) {
 
-	int largo, alto;
+	if (mapa.mapa[fila][columna].tipo == -1) {
 
-	if (casilla.tipo == -1) {
+		renderizarTextura(bordes, renderizado, columna*CASILLA_ANCHO, fila*CASILLA_ALTO);
+	} else if (mapa.mapa[fila][columna].tipo == -2) {
 
-		SDL_QueryTexture(bordes, NULL, NULL, &largo, &alto);
-		renderizarTextura(bordes, renderizado, columna*largo, fila*alto);
-	} else if (casilla.tipo == -2) {
+		renderizarTextura(manzanas, renderizado, columna*CASILLA_ANCHO, fila*CASILLA_ALTO);
+	} else if (mapa.mapa[fila][columna].tipo != 0 && mapa.mapa[fila][columna].tipo == serpiente.contador) {
 
-		SDL_QueryTexture(manzanas, NULL, NULL, &largo, &alto);
-		renderizarTextura(manzanas, renderizado, columna*largo, fila*alto);
-	} else if (casilla.tipo != 0 && casilla.tipo == serpiente.contador) {
+		renderizarTextura(serpientes, renderizado, columna*CASILLA_ANCHO, fila*CASILLA_ALTO, &clipsSerpiente[serpiente.nuevaDireccion * 3]);
+	} else if (mapa.mapa[fila][columna].tipo > 1) {
 
-		SDL_QueryTexture(cabezaSerpiente, NULL, NULL, &largo, &alto);
-		renderizarTextura(cabezaSerpiente, renderizado, columna*largo, fila*alto);
-	} else if (casilla.tipo > 0) {
+		renderizarTextura(serpientes, renderizado, columna*CASILLA_ANCHO, fila*CASILLA_ALTO, &clipsSerpiente[1]);
+	} else if (mapa.mapa[fila][columna].tipo == 1) {
+		
+		if (mapa.mapa[fila - 1][columna].tipo == 2) {
 
-		SDL_QueryTexture(serpientes, NULL, NULL, &largo, &alto);
-		renderizarTextura(serpientes, renderizado, columna*largo, fila*alto);
+			serpiente.ultimaDireccion = tDireccion(0);
+		} else if (mapa.mapa[fila + 1][columna].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(1);
+		} else if (mapa.mapa[fila][columna + 1].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(2);
+		} else if (mapa.mapa[fila][columna - 1].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(3);
+		}
+
+		renderizarTextura(serpientes, renderizado, columna*CASILLA_ANCHO, fila*CASILLA_ALTO, &clipsSerpiente[(serpiente.ultimaDireccion * 3) + 2]);
 	}
 }
 

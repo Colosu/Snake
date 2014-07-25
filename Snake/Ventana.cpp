@@ -66,26 +66,30 @@ SDL_Texture* cargarTextura(const string &archivo, SDL_Renderer *renderizado) {
 	if (textura == NULL) {
 		logSDLError("IMG_LoadTexture()", cerr);
 	}
+
 	return textura;
 }
 
-void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, int y) {
-
-	int ancho, alto;
-
-	SDL_QueryTexture(textura, NULL, NULL, &ancho, &alto);
-	renderizarTextura(textura, renderizado, x, y, ancho, alto);
-}
-
-void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, int y, int ancho, int alto) {
+void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, int y, SDL_Rect *clip) {
 
 	SDL_Rect rectangulo;
 
 	rectangulo.x = x;
 	rectangulo.y = y;
-	rectangulo.w = ancho;
-	rectangulo.h = alto;
 
-	SDL_QueryTexture(textura, NULL, NULL, &rectangulo.w, &rectangulo.h);
-	SDL_RenderCopy(renderizado, textura, NULL, &rectangulo);
+	if (clip != NULL) {
+
+		rectangulo.w = clip -> w;
+		rectangulo.h = clip -> h;
+	} else {
+
+		SDL_QueryTexture(textura, NULL, NULL, &rectangulo.w, &rectangulo.h);
+	}
+
+	renderizarTextura(textura, renderizado, rectangulo, clip);
+}
+
+void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, SDL_Rect rectangulo, SDL_Rect *clip) {
+
+	SDL_RenderCopy(renderizado, textura, clip, &rectangulo);
 }

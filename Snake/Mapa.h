@@ -20,7 +20,7 @@ typedef struct {
 tMapa inicializarMapa(tSerpiente &serpiente);
 void eliminarMapa(tMapa &mapa);
 void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio);
-void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *cabezaSerpiente, SDL_Texture *serpientes);
+void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *bordes, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12]);
 void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna);
 void generarManzana(tMapa &mapa);
 
