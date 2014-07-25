@@ -9,6 +9,7 @@ using namespace std;
 
 const int VENTANA_X = 600;
 const int VENTANA_Y = 600;
+const int VENTANA_EXTRA = 55;
 
 void logSDLError(const string &mensaje, ostream &oflujo);
 int inicializarSDL(Uint32 subsistemas);

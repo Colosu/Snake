@@ -53,7 +53,7 @@ int inicializarVentana(SDL_Window *&ventana, SDL_Renderer *&renderizado, string 
 
 	int inicializado = 0;
 
-	ventana = SDL_CreateWindow(nombre.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, VENTANA_X, (VENTANA_Y + 20), SDL_WINDOW_SHOWN);
+	ventana = SDL_CreateWindow(nombre.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, VENTANA_X, (VENTANA_Y + VENTANA_EXTRA), SDL_WINDOW_SHOWN);
 	if (ventana == NULL) {
 
 		logSDLError("SDL_CreateWindow()", cerr);
@@ -136,7 +136,7 @@ SDL_Texture* renderizarTexto(TTF_Font *fuente, const string &mensaje, SDL_Color 
 
 		textura = SDL_CreateTextureFromSurface(renderizado, superficie);
 
-		if (textura = NULL) {
+		if (textura == NULL) {
 
 			logSDLError("SDL_CreateTextureFromSurface", cerr);
 		}

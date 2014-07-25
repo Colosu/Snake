@@ -75,18 +75,20 @@ void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio, SDL_Texture *
 	int largo, alto;
 
 	SDL_RenderClear(renderizado);
-	
+
+	SDL_QueryTexture(titulo, NULL, NULL, &largo, &alto);
+	renderizarTextura(titulo, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 5) - (alto / 2));
 	SDL_QueryTexture(inicio, NULL, NULL, &largo, &alto);
 	renderizarTextura(inicio, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 2) - (alto / 2));
 	SDL_QueryTexture(iniciar, NULL, NULL, &largo, &alto);
 	renderizarTextura(iniciar, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 2) - (alto / 2));
-	SDL_QueryTexture(titulo, NULL, NULL, &largo, &alto);
-	renderizarTextura(titulo, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 5) - (alto / 2));
 
 	SDL_RenderPresent(renderizado);
 }
 
-void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12]) {
+void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12]) {
+
+	int largo1, largo2, alto;
 
 	SDL_RenderClear(renderizado);
 
@@ -96,6 +98,11 @@ void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SD
 			mostrarCasilla(mapa, serpiente, renderizado, agujeros, manzanas, serpientes, clipsSerpiente, i, j);
 		}
 	}
+
+	SDL_QueryTexture(puntuacion, NULL, NULL, &largo1, &alto);
+	renderizarTextura(puntuacion, renderizado, (VENTANA_X / 5) - (largo1 / 2), VENTANA_Y + 15 + ((VENTANA_EXTRA - 15) / 2) - (alto / 2));
+	SDL_QueryTexture(puntos, NULL, NULL, &largo2, &alto);
+	renderizarTextura(puntos, renderizado, (VENTANA_X / 5) + (largo1 / 2), VENTANA_Y + 15 + ((VENTANA_EXTRA - 15) / 2) - (alto / 2));
 
 	SDL_RenderPresent(renderizado);
 }
@@ -143,6 +150,7 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 	if (mapa.mapa[fila][columna].tipo == -2) {
 
 		serpiente.contador++;
+		serpiente.puntuacion += 5;
 		mapa.mapa[fila][columna].tipo = serpiente.contador;
 		mapa.mapa[fila][columna].serpiente = true;
 		generarManzana(mapa);
@@ -151,7 +159,8 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 		serpiente.contador = 0;
 	} else if (mapa.mapa[fila][columna].tipo > 0) {
 
-		serpiente.contador = serpiente.contador - mapa.mapa[fila][columna].tipo + 1;
+		serpiente.contador -= (mapa.mapa[fila][columna].tipo - 1);
+		serpiente.puntuacion -= (mapa.mapa[fila][columna].tipo * 3);
 		for (int i = 0; i < FILAS; i++) {
 			for (int j = 0; j < COLUMNAS; j++) {
 

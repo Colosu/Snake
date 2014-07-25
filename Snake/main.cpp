@@ -21,18 +21,21 @@ int main(int argc, char **argv) {
 	SDL_Window *ventana = NULL;
 	SDL_Renderer *renderizado = NULL;
 	TTF_Font *fuentePrincipal = NULL;
+	TTF_Font *fuenteSecundaria = NULL;
 	TTF_Font *fuenteJuego = NULL;
 	SDL_Texture *agujeros = NULL;
 	SDL_Texture *manzanas = NULL;
 	SDL_Texture *serpiente1 = NULL;
 	//SDL_Texture *serpiente2 = NULL;
+	SDL_Texture *titulo = NULL;
 	SDL_Texture *inicio = NULL;
 	SDL_Texture *iniciar = NULL;
-	SDL_Texture *titulo = NULL;
 	SDL_Texture *puntuacion = NULL;
+	SDL_Texture *puntos = NULL;
 	SDL_Rect clipsSerpiente[12];
 	SDL_Event evento;
 	string direccion;
+	string cadenaPuntos = "0";
 	int inicializado = 0;
 	bool empezar, finalizar;
 
@@ -56,11 +59,12 @@ int main(int argc, char **argv) {
 
 				if (inicializado == 0) {
 
-					int inicializado1 = 0, inicializado2 = 0;
+					int inicializado1 = 0, inicializado2 = 0, inicializado3 = 0;
 
-					inicializado1 = inicializarFuente(fuentePrincipal, direccion + "BirdsofParadise.ttf", 12);
-					inicializado2 = inicializarFuente(fuenteJuego, direccion + "DigitalAnarchy.ttf", 12);
-					inicializado = inicializado1 + inicializado2;
+					inicializado1 = inicializarFuente(fuentePrincipal, direccion + "BirdsofParadise.ttf", 100);
+					inicializado2 = inicializarFuente(fuenteSecundaria, direccion + "BirdsofParadise.ttf", 50);
+					inicializado3 = inicializarFuente(fuenteJuego, direccion + "Square.ttf", 20);
+					inicializado = inicializado1 + inicializado2 + inicializado3;
 
 					if (inicializado == 0) {
 
@@ -75,11 +79,12 @@ int main(int argc, char **argv) {
 							SDL_Color color1 = { 255, 255, 255, 255 };
 							SDL_Color color2 = { 0, 0, 0, 255 };
 
-							iniciar = renderizarTexto(fuentePrincipal, "Iniciar", color1, renderizado);
 							titulo = renderizarTexto(fuentePrincipal, "Snake", color1, renderizado);
-							puntuacion = renderizarTexto(fuenteJuego, "Puntuación", color2, renderizado);
+							iniciar = renderizarTexto(fuenteSecundaria, "Iniciar", color1, renderizado);
+							puntuacion = renderizarTexto(fuenteJuego, "Puntuación: ", color2, renderizado);
+							puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color2, renderizado);
 
-							if (iniciar != NULL && titulo != NULL && puntuacion != NULL) {
+							if (iniciar != NULL && titulo != NULL && puntuacion != NULL && puntos != NULL) {
 
 								int ancho, alto;
 								empezar = false;
@@ -109,7 +114,7 @@ int main(int argc, char **argv) {
 								inicializarSerpiente(serpiente, clipsSerpiente);
 								SDL_SetRenderDrawColor(renderizado, 0xEF, 0xED, 0xB9, 0xFF);
 								mapa = inicializarMapa(serpiente);
-								mostrarMapa(mapa, serpiente, renderizado, agujeros, manzanas, serpiente1, clipsSerpiente);
+								mostrarMapa(mapa, serpiente, renderizado, puntuacion, puntos, agujeros, manzanas, serpiente1, clipsSerpiente);
 
 								while (!finalizar) {
 
@@ -124,7 +129,19 @@ int main(int argc, char **argv) {
 										}
 									}
 
-									mostrarMapa(mapa, serpiente, renderizado, agujeros, manzanas, serpiente1, clipsSerpiente);
+									SDL_DestroyTexture(puntos);
+
+									int tmp = serpiente.puntuacion;
+									cadenaPuntos = ".0";
+
+									while (tmp != 0) {
+
+										cadenaPuntos = char((tmp % 10) + 48) + cadenaPuntos;
+										tmp /= 10;
+									}
+
+									puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color2, renderizado);
+									mostrarMapa(mapa, serpiente, renderizado, puntuacion, puntos, agujeros, manzanas, serpiente1, clipsSerpiente);
 									if (serpiente.contador <= 0) {
 
 										finalizar = true;
@@ -133,9 +150,10 @@ int main(int argc, char **argv) {
 
 								eliminarMapa(mapa);
 
-								SDL_DestroyTexture(iniciar);
 								SDL_DestroyTexture(titulo);
+								SDL_DestroyTexture(iniciar);
 								SDL_DestroyTexture(puntuacion);
+								SDL_DestroyTexture(puntos);
 							}
 
 							SDL_DestroyTexture(agujeros);
@@ -145,6 +163,7 @@ int main(int argc, char **argv) {
 						}
 
 						TTF_CloseFont(fuentePrincipal);
+						TTF_CloseFont(fuenteSecundaria);
 						TTF_CloseFont(fuenteJuego);
 					}
 
@@ -164,7 +183,7 @@ int main(int argc, char **argv) {
 
 		SDL_Quit();
 	}
-	SDL_Delay(5000);
+
 	return 0;
 }
 
