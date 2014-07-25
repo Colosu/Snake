@@ -2,6 +2,7 @@
 #include <string>
 using namespace std;
 #include "include\SDL2\SDL.h"
+#include "include\SDL2\SDL_image.h"
 #include "Ventana.h"
 
 void logSDLError(const string &mensaje, ostream &oflujo = cerr) {
@@ -9,32 +10,50 @@ void logSDLError(const string &mensaje, ostream &oflujo = cerr) {
 	oflujo << mensaje << " error: " << SDL_GetError() << endl;
 }
 
-int inicializarSDL(SDL_Window *&ventana, SDL_Renderer *&renderizado) {
+int inicializarSDL(Uint32 subsistemas) {
 
 	int inicializado = 0;
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0) {
+	if (SDL_Init(subsistemas) < 0) {
 
 		logSDLError("SDL_Init()", cerr);
 		inicializado = 1;
+	}
+	return inicializado;
+}
+
+int inicializarSDL_Image(IMG_InitFlags subsistemas) {
+
+	int inicializado = 0;
+
+	if ((IMG_Init(subsistemas) & subsistemas) != subsistemas) {
+
+		logSDLError("IMG_Init()", cerr);
+		inicializado = 2;
+	}
+
+	return inicializado;
+}
+
+int inicializarVentana(SDL_Window *&ventana, SDL_Renderer *&renderizado, string nombre) {
+
+	int inicializado = 0;
+
+	ventana = SDL_CreateWindow(nombre.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, VENTANA_X, VENTANA_Y, SDL_WINDOW_SHOWN);
+	if (ventana == NULL) {
+
+		logSDLError("SDL_CreateWindow()", cerr);
+		inicializado = 3;
 	} else {
 
-		ventana = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, VENTANA_X, VENTANA_Y, SDL_WINDOW_SHOWN);
-		if (ventana == NULL) {
+		renderizado = SDL_CreateRenderer(ventana, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		if (renderizado == NULL) {
 
-			logSDLError("SDL_CreateWindow()", cerr);
-			inicializado = 2;
+			logSDLError("SDL_CreateRenderer()", cerr);
+			inicializado = 4;
 		} else {
 
-			renderizado = SDL_CreateRenderer(ventana, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-			if (renderizado == NULL) {
-
-				logSDLError("SDL_CreateRenderer()", cerr);
-				inicializado = 3;
-			} else {
-
-				SDL_SetRenderDrawColor(renderizado, 0x00, 0x00, 0x00, 0xFF);
-			}
+			SDL_SetRenderDrawColor(renderizado, 0x00, 0x00, 0x00, 0xFF);
 		}
 	}
 	return inicializado;
@@ -43,28 +62,29 @@ int inicializarSDL(SDL_Window *&ventana, SDL_Renderer *&renderizado) {
 SDL_Texture* cargarTextura(const string &archivo, SDL_Renderer *renderizado) {
 
 	SDL_Texture *textura = NULL;
-	SDL_Surface *imagenCargada = SDL_LoadBMP(archivo.c_str());
-
-	if (imagenCargada != NULL){
-		textura = SDL_CreateTextureFromSurface(renderizado, imagenCargada);
-		SDL_FreeSurface(imagenCargada);
-
-		if (textura == NULL) {
-			logSDLError("Crear Textura Desde Superficie", cerr);
-		}	
-	} else {
-
-		logSDLError("SDL_LoadBMP()", cerr);
+	textura = IMG_LoadTexture(renderizado, archivo.c_str());
+	if (textura == NULL) {
+		logSDLError("IMG_LoadTexture()", cerr);
 	}
 	return textura;
 }
 
 void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, int y) {
 
+	int ancho, alto;
+
+	SDL_QueryTexture(textura, NULL, NULL, &ancho, &alto);
+	renderizarTextura(textura, renderizado, x, y, ancho, alto);
+}
+
+void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, int y, int ancho, int alto) {
+
 	SDL_Rect rectangulo;
 
 	rectangulo.x = x;
 	rectangulo.y = y;
+	rectangulo.w = ancho;
+	rectangulo.h = alto;
 
 	SDL_QueryTexture(textura, NULL, NULL, &rectangulo.w, &rectangulo.h);
 	SDL_RenderCopy(renderizado, textura, NULL, &rectangulo);
