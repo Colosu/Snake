@@ -53,7 +53,7 @@ int inicializarVentana(SDL_Window *&ventana, SDL_Renderer *&renderizado, string 
 			inicializado = 4;
 		} else {
 
-			SDL_SetRenderDrawColor(renderizado, 0x00, 0x00, 0x00, 0xFF);
+			SDL_SetRenderDrawColor(renderizado, 0xEF, 0xED, 0xB9, 0xFF);
 		}
 	}
 	return inicializado;

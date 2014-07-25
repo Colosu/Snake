@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 	tSerpiente serpiente;
 	SDL_Window *ventana = NULL;
 	SDL_Renderer *renderizado = NULL;
-	SDL_Texture *bordes = NULL;
+	SDL_Texture *agujeros = NULL;
 	SDL_Texture *manzanas = NULL;
 	SDL_Texture *serpiente1 = NULL;
 	//SDL_Texture *serpiente2 = NULL;
@@ -46,13 +46,13 @@ int main(int argc, char **argv) {
 
 				direccion = obtenerDireccion("");
 
-				bordes = cargarTextura(direccion + "bordes.bmp", renderizado);
-				manzanas = cargarTextura(direccion + "manzanas.bmp", renderizado);
+				agujeros = cargarTextura(direccion + "agujeros.bmp", renderizado);
+				manzanas = cargarTextura(direccion + "manzanas.png", renderizado);
 				serpiente1 = cargarTextura(direccion + "serpiente1.png", renderizado);
 				//serpiente2 = cargarTextura(direccion + "serpiente2.bmp", renderizado);
 				inicio = cargarTextura(direccion + "inicio.bmp", renderizado);
 
-				if (bordes != NULL && manzanas != NULL && serpiente1 != NULL /*&& serpiente2 != NULL*/ && inicio != NULL) {
+				if (agujeros != NULL && manzanas != NULL && serpiente1 != NULL /*&& serpiente2 != NULL*/ && inicio != NULL) {
 
 					int ancho, alto;
 					empezar = false;
@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
 					}
 					inicializarSerpiente(serpiente, clipsSerpiente);
 					mapa = inicializarMapa(serpiente);
-					mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, serpiente1, clipsSerpiente);
+					mostrarMapa(mapa, serpiente, renderizado, agujeros, manzanas, serpiente1, clipsSerpiente);
 
 					while (!finalizar) {
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
 							}
 						}
 
-						mostrarMapa(mapa, serpiente, renderizado, bordes, manzanas, serpiente1, clipsSerpiente);
+						mostrarMapa(mapa, serpiente, renderizado, agujeros, manzanas, serpiente1, clipsSerpiente);
 						if (serpiente.contador <= 0) {
 
 							finalizar = true;
@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
 
 					eliminarMapa(mapa);
 
-					SDL_DestroyTexture(bordes);
+					SDL_DestroyTexture(agujeros);
 					SDL_DestroyTexture(manzanas);
 					SDL_DestroyTexture(serpiente1);
 					//SDL_DestroyTexture(serpiente2);
