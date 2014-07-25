@@ -3,6 +3,7 @@
 using namespace std;
 #include "include\SDL2\SDL.h"
 #include "include\SDL2\SDL_image.h"
+#include "include\SDL2\SDL_ttf.h"
 #include "Ventana.h"
 
 void logSDLError(const string &mensaje, ostream &oflujo = cerr) {
@@ -35,26 +36,53 @@ int inicializarSDL_Image(IMG_InitFlags subsistemas) {
 	return inicializado;
 }
 
+int inicializarSDL_ttf() {
+
+	int inicializado = 0;
+
+	if (TTF_Init() != 0) {
+
+		logSDLError("TTF_Init()", cerr);
+		inicializado = 3;
+	}
+
+	return inicializado;
+}
+
 int inicializarVentana(SDL_Window *&ventana, SDL_Renderer *&renderizado, string nombre) {
 
 	int inicializado = 0;
 
-	ventana = SDL_CreateWindow(nombre.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, VENTANA_X, VENTANA_Y, SDL_WINDOW_SHOWN);
+	ventana = SDL_CreateWindow(nombre.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, VENTANA_X, (VENTANA_Y + 20), SDL_WINDOW_SHOWN);
 	if (ventana == NULL) {
 
 		logSDLError("SDL_CreateWindow()", cerr);
-		inicializado = 3;
+		inicializado = 4;
 	} else {
 
 		renderizado = SDL_CreateRenderer(ventana, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		if (renderizado == NULL) {
 
 			logSDLError("SDL_CreateRenderer()", cerr);
-			inicializado = 4;
+			inicializado = 5;
 		} else {
 
-			SDL_SetRenderDrawColor(renderizado, 0xEF, 0xED, 0xB9, 0xFF);
+			SDL_SetRenderDrawColor(renderizado, 0x00, 0x0, 0x00, 0xFF);
 		}
+	}
+	return inicializado;
+}
+
+int inicializarFuente(TTF_Font *&fuente, const string &archivo, int tamaño) {
+
+	int inicializado = 0;
+
+	fuente = TTF_OpenFont(archivo.c_str(), tamaño);
+
+	if (fuente == NULL) {
+
+		logSDLError("TTF_OpenFont()", cerr);
+		inicializado = 6;
 	}
 	return inicializado;
 }
@@ -92,4 +120,29 @@ void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, int x, i
 void renderizarTextura(SDL_Texture *textura, SDL_Renderer *renderizado, SDL_Rect rectangulo, SDL_Rect *clip) {
 
 	SDL_RenderCopy(renderizado, textura, clip, &rectangulo);
+}
+
+SDL_Texture* renderizarTexto(TTF_Font *fuente, const string &mensaje, SDL_Color color, SDL_Renderer *renderizado) {
+
+	SDL_Texture *textura = NULL;
+
+	SDL_Surface *superficie = NULL;
+	superficie = TTF_RenderText_Blended(fuente, mensaje.c_str(), color);
+
+	if (superficie == NULL) {
+
+		logSDLError("TTF_RenderText_Blended()", cerr);
+	} else {
+
+		textura = SDL_CreateTextureFromSurface(renderizado, superficie);
+
+		if (textura = NULL) {
+
+			logSDLError("SDL_CreateTextureFromSurface", cerr);
+		}
+
+		SDL_FreeSurface(superficie);
+	}
+
+	return textura;
 }

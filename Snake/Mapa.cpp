@@ -70,7 +70,7 @@ void eliminarMapa(tMapa &mapa) {
 	delete[] mapa.mapa;
 }
 
-void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio) {
+void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio, SDL_Texture *iniciar, SDL_Texture *titulo) {
 
 	int largo, alto;
 
@@ -78,6 +78,10 @@ void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio) {
 	
 	SDL_QueryTexture(inicio, NULL, NULL, &largo, &alto);
 	renderizarTextura(inicio, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 2) - (alto / 2));
+	SDL_QueryTexture(iniciar, NULL, NULL, &largo, &alto);
+	renderizarTextura(iniciar, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 2) - (alto / 2));
+	SDL_QueryTexture(titulo, NULL, NULL, &largo, &alto);
+	renderizarTextura(titulo, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 5) - (alto / 2));
 
 	SDL_RenderPresent(renderizado);
 }
