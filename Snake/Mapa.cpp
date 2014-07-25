@@ -126,6 +126,10 @@ void mostrarCasilla(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado,
 			serpiente.ultimaDireccion = tDireccion(3);
 		}
 
+		if (mapa.mapa[fila][columna].manzana && mapa.mapa[fila][columna].serpiente) {
+
+			renderizarTextura(agujeros, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
+		}
 		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[(serpiente.ultimaDireccion * 3) + 2]);
 	}
 }
@@ -193,7 +197,7 @@ void generarManzana(tMapa &mapa) {
 	fila = (rand() % (FILAS - 2)) + 1;
 	columna = (rand() % (COLUMNAS - 2)) + 1;
 
-	while (mapa.mapa[fila][columna].tipo > 0 || mapa.mapa[fila][columna].tipo == -1) {
+	while (mapa.mapa[fila][columna].tipo > 0 || mapa.mapa[fila][columna].manzana == true) {
 
 		fila = (rand() % (FILAS - 2)) + 1;
 		columna = (rand() % (COLUMNAS - 2)) + 1;
