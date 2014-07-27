@@ -109,7 +109,7 @@ void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SD
 
 void mostrarCasilla(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12], int fila, int columna) {
 
-	if (mapa.mapa[fila][columna].tipo == -1) {
+	if (mapa.mapa[fila][columna].tipo == -1 && !(mapa.mapa[fila][columna].serpiente)) {
 
 		renderizarTextura(agujeros, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
 	} else if (mapa.mapa[fila][columna].tipo == -2) {
@@ -121,6 +121,27 @@ void mostrarCasilla(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado,
 	} else if (mapa.mapa[fila][columna].tipo > 1) {
 
 		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[1]);
+	} else if (mapa.mapa[fila][columna].tipo == 1 && mapa.mapa[fila][columna].manzana == false) {
+		
+		if (mapa.mapa[fila - 1][columna].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(0);
+		} else if (mapa.mapa[fila + 1][columna].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(1);
+		} else if (mapa.mapa[fila][columna + 1].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(2);
+		} else if (mapa.mapa[fila][columna - 1].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(3);
+		}
+
+		if (mapa.mapa[fila][columna].manzana && mapa.mapa[fila][columna].serpiente) {
+
+			renderizarTextura(agujeros, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
+		}
+		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[(serpiente.ultimaDireccion * 3) + 2]);
 	} else if (mapa.mapa[fila][columna].tipo == 1) {
 		
 		if (mapa.mapa[fila - 1][columna].tipo == 2) {
@@ -133,6 +154,30 @@ void mostrarCasilla(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado,
 
 			serpiente.ultimaDireccion = tDireccion(2);
 		} else if (mapa.mapa[fila][columna - 1].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(3);
+		}
+
+		if (mapa.mapa[fila][columna].manzana && mapa.mapa[fila][columna].serpiente) {
+
+			renderizarTextura(agujeros, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
+		}
+		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[(serpiente.ultimaDireccion * 3) + 2]);
+	} else if (mapa.mapa[fila][columna].tipo == -1 && mapa.mapa[fila][columna].serpiente) {
+
+		if (mapa.mapa[fila - 1][columna].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(0);
+		}
+		else if (mapa.mapa[fila + 1][columna].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(1);
+		}
+		else if (mapa.mapa[fila][columna + 1].tipo == 2) {
+
+			serpiente.ultimaDireccion = tDireccion(2);
+		}
+		else if (mapa.mapa[fila][columna - 1].tipo == 2) {
 
 			serpiente.ultimaDireccion = tDireccion(3);
 		}
@@ -195,10 +240,13 @@ void actualizarMapa(tMapa &mapa) {
 
 	for (int i = 0; i < FILAS; i++) {
 		for (int j = 0; j < COLUMNAS; j++) {
-			if (mapa.mapa[i][j].manzana && mapa.mapa[i][j].serpiente && mapa.mapa[i][j].tipo <= 0) {
+			if (mapa.mapa[i][j].serpiente && mapa.mapa[i][j].tipo == -1) {
 
-				mapa.mapa[i][j].tipo = -1;
-			}
+				mapa.mapa[i][j].serpiente = false;
+			} else if (mapa.mapa[i][j].manzana && mapa.mapa[i][j].serpiente && mapa.mapa[i][j].tipo == 1) {
+
+				 mapa.mapa[i][j].tipo = -1;
+			 } 
 		}
 	}
 }

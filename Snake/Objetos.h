@@ -10,6 +10,7 @@ typedef struct {
 	int fila;
 	int columna;
 	int contador;
+	int puntuacion;
 	tDireccion nuevaDireccion;
 	tDireccion ultimaDireccion;
 } tSerpiente;

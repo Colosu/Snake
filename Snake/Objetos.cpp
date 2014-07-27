@@ -5,6 +5,7 @@ void inicializarSerpiente(tSerpiente &serpiente, SDL_Rect clipsSerpiente[12]) {
 	serpiente.fila = 1;
 	serpiente.columna = 1;
 	serpiente.contador = 1;
+	serpiente.puntuacion = 0;
 	serpiente.nuevaDireccion = tDireccion(0);
 	serpiente.ultimaDireccion = tDireccion(0);
 
