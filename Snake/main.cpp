@@ -132,12 +132,16 @@ int main(int argc, char **argv) {
 									SDL_DestroyTexture(puntos);
 
 									int tmp = serpiente.puntuacion;
-									cadenaPuntos = ".0";
 
-									while (tmp != 0) {
+									if (tmp != 0) {
 
-										cadenaPuntos = char((tmp % 10) + 48) + cadenaPuntos;
-										tmp /= 10;
+										cadenaPuntos = "";
+
+										while (tmp != 0) {
+
+											cadenaPuntos = char((tmp % 10) + 48) + cadenaPuntos;
+											tmp /= 10;
+										}
 									}
 
 									puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color2, renderizado);
