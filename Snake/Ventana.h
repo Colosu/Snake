@@ -7,8 +7,8 @@ using namespace std;
 #include "include\SDL2\SDL_image.h"
 #include "include\SDL2\SDL_ttf.h"
 
-const int VENTANA_X = 600;
-const int VENTANA_Y = 600;
+const int VENTANA_X = 400;
+const int VENTANA_Y = 400;
 const int VENTANA_EXTRA = 55;
 
 void logSDLError(const string &mensaje, ostream &oflujo);

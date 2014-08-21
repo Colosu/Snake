@@ -17,27 +17,32 @@ string obtenerDireccion(const string &direccion);
 int main(int argc, char **argv) {
 
 	tMapa mapa;
-	tSerpiente serpiente;
+	tNoe noe;
+	tAnimal animal;
 	SDL_Window *ventana = NULL;
 	SDL_Renderer *renderizado = NULL;
 	TTF_Font *fuentePrincipal = NULL;
 	TTF_Font *fuenteSecundaria = NULL;
 	TTF_Font *fuenteJuego = NULL;
-	SDL_Texture *agujeros = NULL;
+	SDL_Texture *agua = NULL;
 	SDL_Texture *manzanas = NULL;
-	SDL_Texture *serpiente1 = NULL;
-	//SDL_Texture *serpiente2 = NULL;
+	SDL_Texture *noes = NULL;
+	SDL_Texture *animales[3];
 	SDL_Texture *titulo = NULL;
 	SDL_Texture *inicio = NULL;
 	SDL_Texture *iniciar = NULL;
 	SDL_Texture *puntuacion = NULL;
 	SDL_Texture *puntos = NULL;
-	SDL_Rect clipsSerpiente[12];
+	SDL_Rect clipsNoe[4];
 	SDL_Event evento;
 	string direccion;
 	string cadenaPuntos = "0";
 	int inicializado = 0;
 	bool empezar, finalizar;
+
+	animales[0] = NULL;
+	animales[1] = NULL;
+	animales[2] = NULL;
 
 	srand(time(NULL));
 
@@ -55,7 +60,7 @@ int main(int argc, char **argv) {
 
 			if (inicializado == 0) {
 
-				inicializado = inicializarVentana(ventana, renderizado, "Snake");
+				inicializado = inicializarVentana(ventana, renderizado, "Noé");
 
 				if (inicializado == 0) {
 
@@ -68,18 +73,20 @@ int main(int argc, char **argv) {
 
 					if (inicializado == 0) {
 
-						agujeros = cargarTextura(direccion + "agujeros.bmp", renderizado);
+						agua = cargarTextura(direccion + "agua.bmp", renderizado);
 						manzanas = cargarTextura(direccion + "manzanas.png", renderizado);
-						serpiente1 = cargarTextura(direccion + "serpiente1.png", renderizado);
-						//serpiente2 = cargarTextura(direccion + "serpiente2.bmp", renderizado);
+						noes = cargarTextura(direccion + "noe.png", renderizado);
+						animales[0] = cargarTextura(direccion + "tipo1.bmp", renderizado);
+						animales[1] = cargarTextura(direccion + "tipo2.bmp", renderizado);
+						animales[2] = cargarTextura(direccion + "tipo3.bmp", renderizado);
 						inicio = cargarTextura(direccion + "inicio.bmp", renderizado);
 
-						if (agujeros != NULL && manzanas != NULL && serpiente1 != NULL /*&& serpiente2 != NULL*/ && inicio != NULL) {
+						if (agua != NULL && manzanas != NULL && noes != NULL && animales[0] != NULL && animales[1] != NULL && animales[2] != NULL && inicio != NULL) {
 
 							SDL_Color color1 = { 255, 255, 255, 255 };
 							SDL_Color color2 = { 0, 0, 0, 255 };
 
-							titulo = renderizarTexto(fuentePrincipal, "Snake", color1, renderizado);
+							titulo = renderizarTexto(fuentePrincipal, "Noé", color1, renderizado);
 							iniciar = renderizarTexto(fuenteSecundaria, "Iniciar", color1, renderizado);
 							puntuacion = renderizarTexto(fuenteJuego, "Puntuación: ", color2, renderizado);
 							puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color2, renderizado);
@@ -111,10 +118,10 @@ int main(int argc, char **argv) {
 										}
 									}
 								}
-								inicializarSerpiente(serpiente, clipsSerpiente);
+								inicializarNoe(noe, clipsNoe);
 								SDL_SetRenderDrawColor(renderizado, 0xEF, 0xED, 0xB9, 0xFF);
-								mapa = inicializarMapa(serpiente);
-								mostrarMapa(mapa, serpiente, renderizado, puntuacion, puntos, agujeros, manzanas, serpiente1, clipsSerpiente);
+								mapa = inicializarMapa(noe, animal);
+								mostrarMapa(mapa, noe, animal, renderizado, puntuacion, puntos, agua, manzanas, noes, clipsNoe, animales);
 
 								while (!finalizar) {
 
@@ -125,13 +132,13 @@ int main(int argc, char **argv) {
 										}
 										if (evento.type == SDL_KEYDOWN) {  //Presiona una tecla
 
-											mover(mapa, serpiente, evento);
+											mover(mapa, noe, animal, evento);
 										}
 									}
 
 									SDL_DestroyTexture(puntos);
 
-									int tmp = serpiente.puntuacion;
+									int tmp = noe.puntuacion;
 
 									if (tmp != 0) {
 
@@ -145,8 +152,8 @@ int main(int argc, char **argv) {
 									}
 
 									puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color2, renderizado);
-									mostrarMapa(mapa, serpiente, renderizado, puntuacion, puntos, agujeros, manzanas, serpiente1, clipsSerpiente);
-									if (serpiente.contador <= 0) {
+									mostrarMapa(mapa, noe, animal, renderizado, puntuacion, puntos, agua, manzanas, noes, clipsNoe, animales);
+									if (noe.contador <= 0) {
 
 										finalizar = true;
 									}
@@ -160,10 +167,12 @@ int main(int argc, char **argv) {
 								SDL_DestroyTexture(puntos);
 							}
 
-							SDL_DestroyTexture(agujeros);
+							SDL_DestroyTexture(agua);
 							SDL_DestroyTexture(manzanas);
-							SDL_DestroyTexture(serpiente1);
-							//SDL_DestroyTexture(serpiente2);
+							SDL_DestroyTexture(noes);
+							SDL_DestroyTexture(animales[0]);
+							SDL_DestroyTexture(animales[1]);
+							SDL_DestroyTexture(animales[2]);
 						}
 
 						TTF_CloseFont(fuentePrincipal);

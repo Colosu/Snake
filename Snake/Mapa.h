@@ -4,14 +4,14 @@
 #include "include\SDL2\SDL.h"
 #include "Objetos.h"
 
-const int FILAS = 42;
-const int COLUMNAS = 42;
+const int FILAS = 20;
+const int COLUMNAS = 20;
 
 typedef struct {
 
 	int tipo;
-	bool manzana;
-	bool serpiente;
+	bool animal;
+	bool noe;
 } tCasilla;
 
 typedef struct {
@@ -19,12 +19,12 @@ typedef struct {
 	tCasilla **mapa;
 } tMapa;
 
-tMapa inicializarMapa(tSerpiente &serpiente);
+tMapa inicializarMapa(tNoe &noe, tAnimal &animal);
 void eliminarMapa(tMapa &mapa);
 void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio, SDL_Texture *iniciar, SDL_Texture *titulo);
-void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12]);
-void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna);
-void actualizarMapa(tMapa &mapa);
-void generarManzana(tMapa &mapa);
+void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3]);
+void actualizarMapa(tMapa &mapa, tNoe &noe, tAnimal &animal, int fila, int columna);
+void actualizarMapa(tMapa &mapa, tNoe &noe);
+void generarAnimal(tMapa &mapa, tAnimal &animal);
 
 #endif

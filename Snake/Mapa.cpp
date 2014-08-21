@@ -5,9 +5,9 @@
 #include "Ventana.h"
 #include "Presentacion.h"
 
-void mostrarCasilla(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12], int fila, int columna);
+void mostrarCasilla(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3], int fila, int columna);
 
-tMapa inicializarMapa(tSerpiente &serpiente) {
+tMapa inicializarMapa(tNoe &noe, tAnimal &animal) {
 
 	tMapa mapa;
 	mapa.mapa = new tCasilla* [FILAS];
@@ -16,14 +16,12 @@ tMapa inicializarMapa(tSerpiente &serpiente) {
 		mapa.mapa[i] = new tCasilla [COLUMNAS];
 	}
 
-	int fila, columna;
-
 	//Se inicializan todas las casillas.
 	for (int i = 0; i < FILAS; i++) {
 		for (int j = 0; j < COLUMNAS; j++) {
 			mapa.mapa[i][j].tipo = 0;
-			mapa.mapa[i][j].manzana = false;
-			mapa.mapa[i][j].serpiente = false;
+			mapa.mapa[i][j].animal = false;
+			mapa.mapa[i][j].noe = false;
 		}
 	}
 
@@ -39,24 +37,14 @@ tMapa inicializarMapa(tSerpiente &serpiente) {
 		mapa.mapa[i][COLUMNAS - 1].tipo = -1;
 	}
 
-	//Se coloca la serpiente
-	serpiente.fila = (rand() % (FILAS - 2)) + 1;
-	serpiente.columna = (rand() % (COLUMNAS - 2)) + 1;
-	mapa.mapa[serpiente.fila][serpiente.columna].tipo = serpiente.contador;
-	mapa.mapa[serpiente.fila][serpiente.columna].serpiente = true;
+	//Se coloca a Noé
+	noe.posicion[0] = (rand() % (FILAS - 2)) + 1;
+	noe.posicion[1] = (rand() % (COLUMNAS - 2)) + 1;
+	mapa.mapa[noe.posicion[0]][noe.posicion[1]].tipo = 1;
+	mapa.mapa[noe.posicion[0]][noe.posicion[1]].noe = true;
 
-	//Se coloca la primera manzana
-	fila = (rand() % (FILAS - 2)) + 1;
-	columna = (rand() % (COLUMNAS - 2)) + 1;
-
-	while (fila == serpiente.fila && columna == serpiente.columna) {
-
-		fila = (rand() % (FILAS - 2)) + 1;
-		columna = (rand() % (COLUMNAS - 2)) + 1;
-	}
-
-	mapa.mapa[fila][columna].tipo = -2;
-	mapa.mapa[fila][columna].manzana = true;
+	//Se coloca el primer animal
+	generarAnimal(mapa, animal);
 
 	return mapa;
 }
@@ -86,7 +74,7 @@ void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio, SDL_Texture *
 	SDL_RenderPresent(renderizado);
 }
 
-void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12]) {
+void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3]) {
 
 	int largo1, largo2, alto;
 
@@ -95,7 +83,7 @@ void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SD
 	for (int i = 0; i < FILAS; i++) {
 		for (int j = 0; j < COLUMNAS; j++) {
 
-			mostrarCasilla(mapa, serpiente, renderizado, agujeros, manzanas, serpientes, clipsSerpiente, i, j);
+			mostrarCasilla(mapa, noe, animal, renderizado, agua, manzanas, noes, clipsNoe, animales, i, j);
 		}
 	}
 
@@ -107,105 +95,54 @@ void mostrarMapa(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SD
 	SDL_RenderPresent(renderizado);
 }
 
-void mostrarCasilla(tMapa mapa, tSerpiente serpiente, SDL_Renderer *renderizado, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *serpientes, SDL_Rect clipsSerpiente[12], int fila, int columna) {
+void mostrarCasilla(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3], int fila, int columna) {
 
-	if (mapa.mapa[fila][columna].tipo == -1 && !(mapa.mapa[fila][columna].serpiente)) {
+	if (mapa.mapa[fila][columna].tipo == -1 && !(mapa.mapa[fila][columna].noe)) {
 
-		renderizarTextura(agujeros, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
+		renderizarTextura(agua, renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO);
 	} else if (mapa.mapa[fila][columna].tipo == -2) {
 
-		renderizarTextura(manzanas, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
-	} else if (mapa.mapa[fila][columna].tipo != 0 && mapa.mapa[fila][columna].tipo == serpiente.contador) {
+		renderizarTextura(animales[((animal.alimentacion) - 1)], renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO);
+	} else if (mapa.mapa[fila][columna].tipo == noe.contador && mapa.mapa[fila][columna].tipo > 0) {
 
-		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[serpiente.nuevaDireccion * 3]);
-	} else if (mapa.mapa[fila][columna].tipo > 1) {
-
-		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[1]);
-	} else if (mapa.mapa[fila][columna].tipo == 1 && mapa.mapa[fila][columna].manzana == false) {
+		renderizarTextura(noes, renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO, &clipsNoe[int(noe.direccion)]);
+	} else if (mapa.mapa[fila][columna].tipo > 0 && mapa.mapa[fila][columna].tipo < noe.contador) {
 		
-		if (mapa.mapa[fila - 1][columna].tipo == 2) {
+		tCadena anterior = noe.primero;
 
-			serpiente.ultimaDireccion = tDireccion(0);
-		} else if (mapa.mapa[fila + 1][columna].tipo == 2) {
+		for (int i = 0; i < (noe.contador - (mapa.mapa[fila][columna].tipo + 1)); i++) {
 
-			serpiente.ultimaDireccion = tDireccion(1);
-		} else if (mapa.mapa[fila][columna + 1].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(2);
-		} else if (mapa.mapa[fila][columna - 1].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(3);
+			anterior = anterior->siguiente;
 		}
 
-		if (mapa.mapa[fila][columna].manzana && mapa.mapa[fila][columna].serpiente) {
+		if (mapa.mapa[fila][columna].animal && mapa.mapa[fila][columna].noe) {
 
-			renderizarTextura(agujeros, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
+			renderizarTextura(agua, renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO);
 		}
-		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[(serpiente.ultimaDireccion * 3) + 2]);
-	} else if (mapa.mapa[fila][columna].tipo == 1) {
-		
-		if (mapa.mapa[fila - 1][columna].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(0);
-		} else if (mapa.mapa[fila + 1][columna].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(1);
-		} else if (mapa.mapa[fila][columna + 1].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(2);
-		} else if (mapa.mapa[fila][columna - 1].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(3);
-		}
-
-		if (mapa.mapa[fila][columna].manzana && mapa.mapa[fila][columna].serpiente) {
-
-			renderizarTextura(agujeros, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
-		}
-		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[(serpiente.ultimaDireccion * 3) + 2]);
-	} else if (mapa.mapa[fila][columna].tipo == -1 && mapa.mapa[fila][columna].serpiente) {
-
-		if (mapa.mapa[fila - 1][columna].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(0);
-		}
-		else if (mapa.mapa[fila + 1][columna].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(1);
-		}
-		else if (mapa.mapa[fila][columna + 1].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(2);
-		}
-		else if (mapa.mapa[fila][columna - 1].tipo == 2) {
-
-			serpiente.ultimaDireccion = tDireccion(3);
-		}
-
-		if (mapa.mapa[fila][columna].manzana && mapa.mapa[fila][columna].serpiente) {
-
-			renderizarTextura(agujeros, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO);
-		}
-		renderizarTextura(serpientes, renderizado, (columna - 1)*CASILLA_ANCHO, (fila - 1)*CASILLA_ALTO, &clipsSerpiente[(serpiente.ultimaDireccion * 3) + 2]);
+		renderizarTextura(animales[((anterior->alimentacion) - 1)], renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO);
 	}
 }
 
-void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
+void actualizarMapa(tMapa &mapa, tNoe &noe, tAnimal &animal, int fila, int columna) {
+
+	actualizarCadena(noe);
+	actualizarMapa(mapa, noe);
 
 	if (mapa.mapa[fila][columna].tipo == -2) {
 
-		serpiente.contador++;
-		serpiente.puntuacion += 5;
-		mapa.mapa[fila][columna].tipo = serpiente.contador;
-		mapa.mapa[fila][columna].serpiente = true;
-		generarManzana(mapa);
+		agregarAnimal(noe, animal);
+		noe.contador++;
+		noe.puntuacion += 5;
+		mapa.mapa[fila][columna].tipo = noe.contador;
+		mapa.mapa[fila][columna].noe = true;
+		generarAnimal(mapa, animal);
 	} else if (mapa.mapa[fila][columna].tipo == -1) {
 
-		serpiente.contador = 0;
+		noe.contador = 0;
 	} else if (mapa.mapa[fila][columna].tipo > 0) {
 
-		serpiente.contador -= (mapa.mapa[fila][columna].tipo - 1);
-		serpiente.puntuacion -= (mapa.mapa[fila][columna].tipo * 3);
+		noe.contador -= (mapa.mapa[fila][columna].tipo - 1);
+		noe.puntuacion -= (mapa.mapa[fila][columna].tipo * 3);
 		for (int i = 0; i < FILAS; i++) {
 			for (int j = 0; j < COLUMNAS; j++) {
 
@@ -218,7 +155,8 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 				}
 			}
 		}
-		mapa.mapa[fila][columna].tipo = serpiente.contador;
+		mapa.mapa[fila][columna].tipo = noe.contador;
+		mapa.mapa[fila][columna].noe = true;
 	} else {
 
 		for (int i = 0; i < FILAS; i++) {
@@ -230,40 +168,63 @@ void actualizarMapa(tMapa &mapa, tSerpiente &serpiente, int fila, int columna) {
 				}
 			}
 		}
-		mapa.mapa[fila][columna].tipo = serpiente.contador;
+		mapa.mapa[fila][columna].tipo = noe.contador;
+		mapa.mapa[fila][columna].noe = true;
 	}
-
-	actualizarMapa(mapa);
 }
 
-void actualizarMapa(tMapa &mapa) {
+void actualizarMapa(tMapa &mapa, tNoe &noe) {
 
 	for (int i = 0; i < FILAS; i++) {
 		for (int j = 0; j < COLUMNAS; j++) {
-			if (mapa.mapa[i][j].serpiente && mapa.mapa[i][j].tipo == -1) {
+			if (mapa.mapa[i][j].animal && mapa.mapa[i][j].noe && mapa.mapa[i][j].tipo == 0) {
 
-				mapa.mapa[i][j].serpiente = false;
-			} else if (mapa.mapa[i][j].manzana && mapa.mapa[i][j].serpiente && mapa.mapa[i][j].tipo == 1) {
+				mapa.mapa[i][j].tipo = -1;
+				mapa.mapa[i][j].noe = false;
+			}
+			else if (mapa.mapa[i][j].noe && mapa.mapa[i][j].tipo == 0) {
 
-				 mapa.mapa[i][j].tipo = -1;
-			 } 
+				mapa.mapa[i][j].noe = false;
+			}
+		}
+	}
+
+	if (noe.contador < mapa.mapa[noe.posicion[0]][noe.posicion[1]].tipo) {
+
+		for (int I = 0; I < (mapa.mapa[noe.posicion[0]][noe.posicion[1]].tipo - noe.contador); I++) {
+
+			for (int i = 0; i < FILAS; i++) {
+				for (int j = 0; j < COLUMNAS; j++) {
+
+					if (mapa.mapa[i][j].tipo > 0) {
+
+						mapa.mapa[i][j].tipo--;
+					}
+				}
+			}
 		}
 	}
 }
 
-void generarManzana(tMapa &mapa) {
+void generarAnimal(tMapa &mapa, tAnimal &animal) {
 
 	int fila, columna;
 
 	fila = (rand() % (FILAS - 2)) + 1;
 	columna = (rand() % (COLUMNAS - 2)) + 1;
 
-	while (mapa.mapa[fila][columna].tipo > 0 || mapa.mapa[fila][columna].manzana == true) {
+	while (mapa.mapa[fila][columna].tipo > 0 || mapa.mapa[fila][columna].animal == true) {
 
 		fila = (rand() % (FILAS - 2)) + 1;
 		columna = (rand() % (COLUMNAS - 2)) + 1;
 	}
 
 	mapa.mapa[fila][columna].tipo = -2;
-	mapa.mapa[fila][columna].manzana = true;
+	mapa.mapa[fila][columna].animal = true;
+	animal.animal = (rand() % ANIMALES) + 1;
+	animal.alimentacion = (rand() % ALIMENTACION) + 1;
+	animal.direccion = Sur;
+	animal.posicion[0] = fila;
+	animal.posicion[1] = columna;
+	animal.siguiente = NULL;
 }
