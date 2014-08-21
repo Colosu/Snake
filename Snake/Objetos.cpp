@@ -56,7 +56,7 @@ void actualizarCadena(tNoe &noe) {
 	int I = 1;
 	tCadena anterior, posterior;
 
-	while (I < (noe.contador - 2)) {
+	while (I < (noe.contador - 1)) {
 
 		anterior = noe.primero;
 		posterior = noe.primero;
@@ -78,6 +78,7 @@ void actualizarCadena(tNoe &noe) {
 			anterior->direccion = posterior->direccion;
 			delete noe.primero;
 			noe.primero = anterior;
+			noe.puntuacion -= 3;
 			noe.contador--;
 			I--;
 		} else if (anterior->alimentacion == (posterior->alimentacion + 1)) {
@@ -96,10 +97,31 @@ void actualizarCadena(tNoe &noe) {
 			anterior->direccion = posterior->direccion;
 			delete tmp->siguiente;
 			tmp->siguiente = anterior;
+			noe.puntuacion -= 3;
 			noe.contador--;
 			I--;
 		}
 
 		I++;
 	}
+}
+
+void eliminarNoe(tNoe &noe) {
+
+	for (int I = (noe.contador - 2); I > 0; I--) {
+
+		tCadena tmp;
+
+		tmp = noe.primero;
+
+		for (int i = 0; i < (noe.contador - 3); i++) {
+
+			tmp = tmp->siguiente;
+		}
+
+		delete tmp->siguiente;
+		noe.contador--;
+	}
+
+	delete noe.primero;
 }

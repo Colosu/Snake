@@ -33,5 +33,6 @@ typedef struct {
 void inicializarNoe(tNoe &noe, SDL_Rect clipsNoe[4]);
 void agregarAnimal(tNoe &noe, const tAnimal &animal);
 void actualizarCadena(tNoe &noe);
+void eliminarNoe(tNoe &noe);
 
 #endif

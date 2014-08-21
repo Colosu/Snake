@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
 	tMapa mapa;
 	tNoe noe;
-	tAnimal animal;
+	tAnimal animal1, animal2;
 	SDL_Window *ventana = NULL;
 	SDL_Renderer *renderizado = NULL;
 	TTF_Font *fuentePrincipal = NULL;
@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 
 			if (inicializado == 0) {
 
-				inicializado = inicializarVentana(ventana, renderizado, "Noé");
+				inicializado = inicializarVentana(ventana, renderizado, "Noe");
 
 				if (inicializado == 0) {
 
@@ -120,8 +120,8 @@ int main(int argc, char **argv) {
 								}
 								inicializarNoe(noe, clipsNoe);
 								SDL_SetRenderDrawColor(renderizado, 0xEF, 0xED, 0xB9, 0xFF);
-								mapa = inicializarMapa(noe, animal);
-								mostrarMapa(mapa, noe, animal, renderizado, puntuacion, puntos, agua, manzanas, noes, clipsNoe, animales);
+								mapa = inicializarMapa(noe, animal1, animal2);
+								mostrarMapa(mapa, noe, animal1, animal2, renderizado, puntuacion, puntos, agua, manzanas, noes, clipsNoe, animales);
 
 								while (!finalizar) {
 
@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
 										}
 										if (evento.type == SDL_KEYDOWN) {  //Presiona una tecla
 
-											mover(mapa, noe, animal, evento);
+											mover(mapa, noe, animal1, animal2, evento);
 										}
 									}
 
@@ -152,7 +152,7 @@ int main(int argc, char **argv) {
 									}
 
 									puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color2, renderizado);
-									mostrarMapa(mapa, noe, animal, renderizado, puntuacion, puntos, agua, manzanas, noes, clipsNoe, animales);
+									mostrarMapa(mapa, noe, animal1, animal2, renderizado, puntuacion, puntos, agua, manzanas, noes, clipsNoe, animales);
 									if (noe.contador <= 0) {
 
 										finalizar = true;
@@ -160,6 +160,7 @@ int main(int argc, char **argv) {
 								}
 
 								eliminarMapa(mapa);
+								eliminarNoe(noe);
 
 								SDL_DestroyTexture(titulo);
 								SDL_DestroyTexture(iniciar);

@@ -5,9 +5,9 @@
 #include "Ventana.h"
 #include "Presentacion.h"
 
-void mostrarCasilla(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3], int fila, int columna);
+void mostrarCasilla(tMapa mapa, tNoe noe, tAnimal animal1, tAnimal animal2, SDL_Renderer *renderizado, SDL_Texture *agujeros, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3], int fila, int columna);
 
-tMapa inicializarMapa(tNoe &noe, tAnimal &animal) {
+tMapa inicializarMapa(tNoe &noe, tAnimal &animal1, tAnimal &animal2) {
 
 	tMapa mapa;
 	mapa.mapa = new tCasilla* [FILAS];
@@ -43,8 +43,9 @@ tMapa inicializarMapa(tNoe &noe, tAnimal &animal) {
 	mapa.mapa[noe.posicion[0]][noe.posicion[1]].tipo = 1;
 	mapa.mapa[noe.posicion[0]][noe.posicion[1]].noe = true;
 
-	//Se coloca el primer animal
-	generarAnimal(mapa, animal);
+	//Se colocan los primeros animales
+	generarAnimal(mapa, animal1);
+	generarAnimal(mapa, animal2);
 
 	return mapa;
 }
@@ -74,7 +75,7 @@ void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio, SDL_Texture *
 	SDL_RenderPresent(renderizado);
 }
 
-void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3]) {
+void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal1, tAnimal animal2, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3]) {
 
 	int largo1, largo2, alto;
 
@@ -83,26 +84,29 @@ void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado
 	for (int i = 0; i < FILAS; i++) {
 		for (int j = 0; j < COLUMNAS; j++) {
 
-			mostrarCasilla(mapa, noe, animal, renderizado, agua, manzanas, noes, clipsNoe, animales, i, j);
+			mostrarCasilla(mapa, noe, animal1, animal2, renderizado, agua, manzanas, noes, clipsNoe, animales, i, j);
 		}
 	}
 
 	SDL_QueryTexture(puntuacion, NULL, NULL, &largo1, &alto);
-	renderizarTextura(puntuacion, renderizado, (VENTANA_X / 5) - (largo1 / 2), VENTANA_Y + 15 + ((VENTANA_EXTRA - 15) / 2) - (alto / 2));
+	renderizarTextura(puntuacion, renderizado, (VENTANA_X / 5) - (largo1 / 2), VENTANA_Y + 15 + ((VENTANA_EXTRA_Y - 15) / 2) - (alto / 2));
 	SDL_QueryTexture(puntos, NULL, NULL, &largo2, &alto);
-	renderizarTextura(puntos, renderizado, (VENTANA_X / 5) + (largo1 / 2), VENTANA_Y + 15 + ((VENTANA_EXTRA - 15) / 2) - (alto / 2));
+	renderizarTextura(puntos, renderizado, (VENTANA_X / 5) + (largo1 / 2), VENTANA_Y + 15 + ((VENTANA_EXTRA_Y - 15) / 2) - (alto / 2));
 
 	SDL_RenderPresent(renderizado);
 }
 
-void mostrarCasilla(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3], int fila, int columna) {
+void mostrarCasilla(tMapa mapa, tNoe noe, tAnimal animal1, tAnimal animal2, SDL_Renderer *renderizado, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3], int fila, int columna) {
 
 	if (mapa.mapa[fila][columna].tipo == -1 && !(mapa.mapa[fila][columna].noe)) {
 
 		renderizarTextura(agua, renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO);
-	} else if (mapa.mapa[fila][columna].tipo == -2) {
+	} else if (mapa.mapa[fila][columna].tipo == -2 && fila == animal1.posicion[0] && columna == animal1.posicion[1]) {
 
-		renderizarTextura(animales[((animal.alimentacion) - 1)], renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO);
+		renderizarTextura(animales[((animal1.alimentacion) - 1)], renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO);
+	} else if (mapa.mapa[fila][columna].tipo == -2 && fila == animal2.posicion[0] && columna == animal2.posicion[1]) {
+
+		renderizarTextura(animales[((animal2.alimentacion) - 1)], renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO);
 	} else if (mapa.mapa[fila][columna].tipo == noe.contador && mapa.mapa[fila][columna].tipo > 0) {
 
 		renderizarTextura(noes, renderizado, columna * CASILLA_ANCHO, fila * CASILLA_ALTO, &clipsNoe[int(noe.direccion)]);
@@ -123,19 +127,24 @@ void mostrarCasilla(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderiz
 	}
 }
 
-void actualizarMapa(tMapa &mapa, tNoe &noe, tAnimal &animal, int fila, int columna) {
+void actualizarMapa(tMapa &mapa, tNoe &noe, tAnimal &animal1, tAnimal &animal2, int fila, int columna) {
 
-	actualizarCadena(noe);
-	actualizarMapa(mapa, noe);
+	if (mapa.mapa[fila][columna].tipo == -2 && fila == animal1.posicion[0] && columna == animal1.posicion[1]) {
 
-	if (mapa.mapa[fila][columna].tipo == -2) {
-
-		agregarAnimal(noe, animal);
+		agregarAnimal(noe, animal1);
 		noe.contador++;
 		noe.puntuacion += 5;
 		mapa.mapa[fila][columna].tipo = noe.contador;
 		mapa.mapa[fila][columna].noe = true;
-		generarAnimal(mapa, animal);
+		generarAnimal(mapa, animal1);
+	} else if (mapa.mapa[fila][columna].tipo == -2 && fila == animal2.posicion[0] && columna == animal2.posicion[1]) {
+
+		agregarAnimal(noe, animal2);
+		noe.contador++;
+		noe.puntuacion += 5;
+		mapa.mapa[fila][columna].tipo = noe.contador;
+		mapa.mapa[fila][columna].noe = true;
+		generarAnimal(mapa, animal2);
 	} else if (mapa.mapa[fila][columna].tipo == -1) {
 
 		noe.contador = 0;
@@ -171,6 +180,8 @@ void actualizarMapa(tMapa &mapa, tNoe &noe, tAnimal &animal, int fila, int colum
 		mapa.mapa[fila][columna].tipo = noe.contador;
 		mapa.mapa[fila][columna].noe = true;
 	}
+	actualizarCadena(noe);
+	actualizarMapa(mapa, noe);
 }
 
 void actualizarMapa(tMapa &mapa, tNoe &noe) {
@@ -213,7 +224,7 @@ void generarAnimal(tMapa &mapa, tAnimal &animal) {
 	fila = (rand() % (FILAS - 2)) + 1;
 	columna = (rand() % (COLUMNAS - 2)) + 1;
 
-	while (mapa.mapa[fila][columna].tipo > 0 || mapa.mapa[fila][columna].animal == true) {
+	while (mapa.mapa[fila][columna].tipo != 0 || mapa.mapa[fila][columna].animal == true) {
 
 		fila = (rand() % (FILAS - 2)) + 1;
 		columna = (rand() % (COLUMNAS - 2)) + 1;

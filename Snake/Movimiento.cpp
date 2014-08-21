@@ -5,32 +5,32 @@
 
 void actualizarNoe(tNoe &noe);
 
-void mover(tMapa &mapa, tNoe &noe, tAnimal &animal, const SDL_Event &evento) {
+void mover(tMapa &mapa, tNoe &noe, tAnimal &animal1, tAnimal &animal2, const SDL_Event &evento) {
 
 	if (evento.key.keysym.sym == SDLK_a || evento.key.keysym.sym == SDLK_LEFT) {
 
 		actualizarNoe(noe);
 		noe.posicion[1]--;
 		noe.direccion = tDireccion(3);
-		actualizarMapa(mapa, noe, animal, noe.posicion[0], noe.posicion[1]);
+		actualizarMapa(mapa, noe, animal1, animal2, noe.posicion[0], noe.posicion[1]);
 	} else if (evento.key.keysym.sym == SDLK_w || evento.key.keysym.sym == SDLK_UP) {
 
 		actualizarNoe(noe);
 		noe.posicion[0]--;
 		noe.direccion = tDireccion(0);
-		actualizarMapa(mapa, noe, animal, noe.posicion[0], noe.posicion[1]);
+		actualizarMapa(mapa, noe, animal1, animal2, noe.posicion[0], noe.posicion[1]);
 	} else if (evento.key.keysym.sym == SDLK_d || evento.key.keysym.sym == SDLK_RIGHT) {
 
 		actualizarNoe(noe);
 		noe.posicion[1]++;
 		noe.direccion = tDireccion(2);
-		actualizarMapa(mapa, noe, animal, noe.posicion[0], noe.posicion[1]);
+		actualizarMapa(mapa, noe, animal1, animal2, noe.posicion[0], noe.posicion[1]);
 	} else if (evento.key.keysym.sym == SDLK_s || evento.key.keysym.sym == SDLK_DOWN) {
 
 		actualizarNoe(noe);
 		noe.posicion[0]++;
 		noe.direccion = tDireccion(1);
-		actualizarMapa(mapa, noe, animal, noe.posicion[0], noe.posicion[1]);
+		actualizarMapa(mapa, noe, animal1, animal2, noe.posicion[0], noe.posicion[1]);
 	}
 }
 

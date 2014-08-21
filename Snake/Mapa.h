@@ -19,11 +19,11 @@ typedef struct {
 	tCasilla **mapa;
 } tMapa;
 
-tMapa inicializarMapa(tNoe &noe, tAnimal &animal);
+tMapa inicializarMapa(tNoe &noe, tAnimal &animal1, tAnimal &animal2);
 void eliminarMapa(tMapa &mapa);
 void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio, SDL_Texture *iniciar, SDL_Texture *titulo);
-void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3]);
-void actualizarMapa(tMapa &mapa, tNoe &noe, tAnimal &animal, int fila, int columna);
+void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal1, tAnimal animal2, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3]);
+void actualizarMapa(tMapa &mapa, tNoe &noe, tAnimal &animal1, tAnimal &animal2, int fila, int columna);
 void actualizarMapa(tMapa &mapa, tNoe &noe);
 void generarAnimal(tMapa &mapa, tAnimal &animal);
 
