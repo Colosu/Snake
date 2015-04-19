@@ -11,6 +11,7 @@ using namespace std;
 #include "Movimiento.h"
 #include "Ventana.h"
 #include "Presentacion.h"
+#include "Registro.h"
 
 string obtenerDireccion(const string &direccion);
 
@@ -28,9 +29,6 @@ int main(int argc, char **argv) {
 	SDL_Texture *manzanas = NULL;
 	SDL_Texture *noes = NULL;
 	SDL_Texture *animales[3];
-	SDL_Texture *titulo = NULL;
-	SDL_Texture *inicio = NULL;
-	SDL_Texture *iniciar = NULL;
 	SDL_Texture *puntuacion = NULL;
 	SDL_Texture *puntos = NULL;
 	SDL_Rect clipsNoe[4];
@@ -38,7 +36,7 @@ int main(int argc, char **argv) {
 	string direccion;
 	string cadenaPuntos = "0";
 	int inicializado = 0;
-	bool empezar, finalizar;
+	bool empezar, finalizar, iniciado;
 
 	animales[0] = NULL;
 	animales[1] = NULL;
@@ -79,31 +77,25 @@ int main(int argc, char **argv) {
 						animales[0] = cargarTextura(direccion + "tipo1.bmp", renderizado);
 						animales[1] = cargarTextura(direccion + "tipo2.bmp", renderizado);
 						animales[2] = cargarTextura(direccion + "tipo3.bmp", renderizado);
-						inicio = cargarTextura(direccion + "inicio.bmp", renderizado);
 
-						if (agua != NULL && manzanas != NULL && noes != NULL && animales[0] != NULL && animales[1] != NULL && animales[2] != NULL && inicio != NULL) {
+						if (agua != NULL && manzanas != NULL && noes != NULL && animales[0] != NULL && animales[1] != NULL && animales[2] != NULL) {
 
-							SDL_Color color1 = { 255, 255, 255, 255 };
-							SDL_Color color2 = { 0, 0, 0, 255 };
+							SDL_Color color = { 0, 0, 0, 255 };
 
-							titulo = renderizarTexto(fuentePrincipal, "Noé", color1, renderizado);
-							iniciar = renderizarTexto(fuenteSecundaria, "Iniciar", color1, renderizado);
-							puntuacion = renderizarTexto(fuenteJuego, "Puntuación: ", color2, renderizado);
-							puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color2, renderizado);
+							puntuacion = renderizarTexto(fuenteJuego, "Puntuación: ", color, renderizado);
+							puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color, renderizado);
 
-							if (iniciar != NULL && titulo != NULL && puntuacion != NULL && puntos != NULL) {
+							if (puntuacion != NULL && puntos != NULL) {
 
 								int ancho, alto;
 								empezar = false;
 								finalizar = false;
 
-								while (!empezar && !finalizar) {
+								if (!empezar && !finalizar) {
 
-									mostrarInicio(renderizado, inicio, iniciar, titulo);
+									iniciado = mostrarInicio(renderizado, fuentePrincipal, fuenteSecundaria, direccion, ancho, alto);
 
-									SDL_QueryTexture(inicio, NULL, NULL, &ancho, &alto);
-
-									while (SDL_PollEvent(&evento)) {
+									while (SDL_PollEvent(&evento) && iniciado) {
 
 										if (evento.type == SDL_QUIT) { //Cierra la ventana con la X
 											finalizar = true;
@@ -151,7 +143,7 @@ int main(int argc, char **argv) {
 										}
 									}
 
-									puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color2, renderizado);
+									puntos = renderizarTexto(fuenteJuego, cadenaPuntos, color, renderizado);
 									mostrarMapa(mapa, noe, animal1, animal2, renderizado, puntuacion, puntos, agua, manzanas, noes, clipsNoe, animales);
 									if (noe.contador <= 0) {
 
@@ -159,11 +151,11 @@ int main(int argc, char **argv) {
 									}
 								}
 
+								ranking(noe);
+
 								eliminarMapa(mapa);
 								eliminarNoe(noe);
 
-								SDL_DestroyTexture(titulo);
-								SDL_DestroyTexture(iniciar);
 								SDL_DestroyTexture(puntuacion);
 								SDL_DestroyTexture(puntos);
 							}

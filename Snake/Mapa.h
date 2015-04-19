@@ -1,7 +1,10 @@
 #ifndef MAPA_H
 #define MAPA_H
 
+#include <string>
 #include "include\SDL2\SDL.h"
+#include "include\SDL2\SDL_image.h"
+#include "include\SDL2\SDL_ttf.h"
 #include "Objetos.h"
 
 const int FILAS = 20;
@@ -21,7 +24,7 @@ typedef struct {
 
 tMapa inicializarMapa(tNoe &noe, tAnimal &animal1, tAnimal &animal2);
 void eliminarMapa(tMapa &mapa);
-void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio, SDL_Texture *iniciar, SDL_Texture *titulo);
+bool mostrarInicio(SDL_Renderer *renderizado, TTF_Font *fuentePrincipal, TTF_Font *fuenteSecundaria, string direccion, int &ancho, int &alto);
 void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal1, tAnimal animal2, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3]);
 void actualizarMapa(tMapa &mapa, tNoe &noe, tAnimal &animal1, tAnimal &animal2, int fila, int columna);
 void actualizarMapa(tMapa &mapa, tNoe &noe);

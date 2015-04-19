@@ -1,5 +1,8 @@
+#include <string>
 #include <cstdlib>
 #include "include\SDL2\SDL.h"
+#include "include\SDL2\SDL_image.h"
+#include "include\SDL2\SDL_ttf.h"
 #include "Mapa.h"
 #include "Objetos.h"
 #include "Ventana.h"
@@ -59,20 +62,44 @@ void eliminarMapa(tMapa &mapa) {
 	delete[] mapa.mapa;
 }
 
-void mostrarInicio(SDL_Renderer *renderizado, SDL_Texture *inicio, SDL_Texture *iniciar, SDL_Texture *titulo) {
+bool mostrarInicio(SDL_Renderer *renderizado, TTF_Font *fuentePrincipal, TTF_Font *fuenteSecundaria, string direccion, int &ancho, int &alto) {
 
-	int largo, alto;
+	bool iniciado;
+	SDL_Texture *titulo = NULL;
+	SDL_Texture *inicio = NULL;
+	SDL_Texture *iniciar = NULL;
+	SDL_Color color = { 255, 255, 255, 255 };
 
-	SDL_RenderClear(renderizado);
+	inicio = cargarTextura(direccion + "inicio.bmp", renderizado);
+	titulo = renderizarTexto(fuentePrincipal, "Noé", color, renderizado);
+	iniciar = renderizarTexto(fuenteSecundaria, "Iniciar", color, renderizado);
 
-	SDL_QueryTexture(titulo, NULL, NULL, &largo, &alto);
-	renderizarTextura(titulo, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 5) - (alto / 2));
-	SDL_QueryTexture(inicio, NULL, NULL, &largo, &alto);
-	renderizarTextura(inicio, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 2) - (alto / 2));
-	SDL_QueryTexture(iniciar, NULL, NULL, &largo, &alto);
-	renderizarTextura(iniciar, renderizado, (VENTANA_X / 2) - (largo / 2), (VENTANA_Y / 2) - (alto / 2));
+	if (inicio != NULL && titulo != NULL && iniciar != NULL) {
 
-	SDL_RenderPresent(renderizado);
+		SDL_RenderClear(renderizado);
+
+		SDL_QueryTexture(inicio, NULL, NULL, &ancho, &alto);
+		renderizarTextura(inicio, renderizado, (VENTANA_X / 2) - (ancho / 2), (VENTANA_Y / 2) - (alto / 2));
+		SDL_QueryTexture(titulo, NULL, NULL, &ancho, &alto);
+		renderizarTextura(titulo, renderizado, (VENTANA_X / 2) - (ancho / 2), (VENTANA_Y / 5) - (alto / 2));
+		SDL_QueryTexture(iniciar, NULL, NULL, &ancho, &alto);
+		renderizarTextura(iniciar, renderizado, (VENTANA_X / 2) - (ancho / 2), (VENTANA_Y / 2) - (alto / 2));
+
+		SDL_RenderPresent(renderizado);
+
+		iniciado = true;
+	} else {
+
+		iniciado = false;
+	}
+
+	SDL_QueryTexture(inicio, NULL, NULL, &ancho, &alto);
+
+	SDL_DestroyTexture(inicio);
+	SDL_DestroyTexture(titulo);
+	SDL_DestroyTexture(iniciar);
+	
+	return iniciado;
 }
 
 void mostrarMapa(tMapa mapa, tNoe noe, tAnimal animal1, tAnimal animal2, SDL_Renderer *renderizado, SDL_Texture *puntuacion, SDL_Texture *puntos, SDL_Texture *agua, SDL_Texture *manzanas, SDL_Texture *noes, SDL_Rect clipsNoe[4], SDL_Texture *animales[3]) {

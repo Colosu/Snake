@@ -1,18 +1,31 @@
-﻿Compilación iniciada a las 21/08/2014 16:04:32.
+﻿Compilación iniciada a las 04/10/2014 11:18:24.
      1>Proyecto "C:\Users\alfredo\Documents\GitHub\Snake\Snake\Snake.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Mapa.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Mapa.cpp Movimiento.cpp Registro.cpp main.cpp
+         Registro.cpp
+     1>c:\users\alfredo\documents\github\snake\snake\registro.h(8): error C2065: 'string' : identificador no declarado
+     1>c:\users\alfredo\documents\github\snake\snake\registro.h(8): error C2146: error de sintaxis : falta ')' delante del identificador 'jugador'
+     1>c:\users\alfredo\documents\github\snake\snake\registro.h(8): error C2059: error de sintaxis : ')'
+     1>c:\users\alfredo\documents\github\snake\snake\registro.h(10): error C2065: 'string' : identificador no declarado
+     1>c:\users\alfredo\documents\github\snake\snake\registro.h(10): error C2146: error de sintaxis : falta ')' delante del identificador 'archivo'
+     1>c:\users\alfredo\documents\github\snake\snake\registro.h(10): error C2059: error de sintaxis : ')'
+     1>c:\users\alfredo\documents\github\snake\snake\registro.cpp(17): error C2064: el término no se evalúa como una función con 3 argumentos
+     1>c:\users\alfredo\documents\github\snake\snake\registro.cpp(28): error C2365: 'actualizarRanking' : nueva definición; la definición anterior era 'variable de datos'
+                 c:\users\alfredo\documents\github\snake\snake\registro.h(8) : vea la declaración de 'actualizarRanking'
+     1>c:\users\alfredo\documents\github\snake\snake\registro.cpp(47): error C2064: el término no se evalúa como una función con 2 argumentos
+     1>c:\users\alfredo\documents\github\snake\snake\registro.cpp(108): error C2365: 'copiarArchivo' : nueva definición; la definición anterior era 'variable de datos'
+                 c:\users\alfredo\documents\github\snake\snake\registro.h(10) : vea la declaración de 'copiarArchivo'
+         Movimiento.cpp
+     1>c:\users\alfredo\documents\github\snake\snake\mapa.h(27): error C2061: error de sintaxis : identificador 'string'
          Mapa.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\alfredo\Documents\GitHub\Snake\Snake\Debug\Snake.exe" /INCREMENTAL /NOLOGO /LIBPATH:lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib SDL2.lib SDL2main.lib SDL2_image.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\alfredo\Documents\GitHub\Snake\Snake\Debug\Snake.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\alfredo\Documents\GitHub\Snake\Snake\Debug\Snake.lib" /MACHINE:X86 Debug\main.obj
-         Debug\Mapa.obj
-         Debug\Movimiento.obj
-         Debug\Presentacion.obj
-         Debug\Objetos.obj
-         Debug\Ventana.obj
-         Snake.vcxproj -> C:\Users\alfredo\Documents\GitHub\Snake\Snake\Debug\Snake.exe
-     1>Compilación del proyecto terminada "C:\Users\alfredo\Documents\GitHub\Snake\Snake\Snake.vcxproj" (Build destinos).
+     1>c:\users\alfredo\documents\github\snake\snake\mapa.h(27): error C2061: error de sintaxis : identificador 'string'
+         Generando código...
+         Compilando...
+         main.cpp
+     1>c:\users\alfredo\documents\github\snake\snake\main.cpp(45): warning C4244: 'argumento' : conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+         Generando código...
+     1>Compilación del proyecto terminada "C:\Users\alfredo\Documents\GitHub\Snake\Snake\Snake.vcxproj" (Build destinos) -- ERROR.
 
-Compilación correcta.
+ERROR al compilar.
 
-Tiempo transcurrido 00:00:01.17
+Tiempo transcurrido 00:00:09.29

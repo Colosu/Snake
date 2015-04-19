@@ -1,6 +1,8 @@
 #ifndef OBJETOS_H
 #define OBJETOS_H
 
+#include "include\SDL2\SDL.h"
+
 const int CASILLA_ANCHO = 20;
 const int CASILLA_ALTO = 20;
 const int ANIMALES = 3;
